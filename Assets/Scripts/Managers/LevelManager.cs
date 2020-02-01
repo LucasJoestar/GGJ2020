@@ -36,8 +36,8 @@ public class LevelManager : MonoBehaviour
         }
 
         // Instantiate players
-        Instantiate(GameManager.I.PlayerOne, _playerOnePosition, Quaternion.identity);
-        Instantiate(GameManager.I.PlayerTwo, _playerTwoPosition, Quaternion.identity);
+        Instantiate(GameManager.I.PlayerOne, _playerOnePosition, GameManager.I.PlayerOne.transform.rotation);
+        Instantiate(GameManager.I.PlayerTwo, _playerTwoPosition, GameManager.I.PlayerTwo.transform.rotation);
     }
 
     private void OnDrawGizmos()
