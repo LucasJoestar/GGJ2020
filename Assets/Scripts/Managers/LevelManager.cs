@@ -14,11 +14,35 @@ public class LevelManager : MonoBehaviour
     }
 
     #region Fields / Properties
+    public static LevelManager  I =                     null;
+
     [SerializeField, Section("SPAWN POINTS")]
     private SpawnPoint[]        spawnPoints =           new SpawnPoint[] { };
     #endregion
 
     #region Methods
+    public void SpawnNewRepairable()
+    {
+
+    }
+
+
+    private void Awake()
+    {
+        if (I)
+        {
+            Destroy(this);
+            return;
+        }
+
+        I = this;
+    }
+
+    private void OnDestroy()
+    {
+        if (I == this) I = null;
+    }
+
     // Start is called before the first frame update
     void Start()
     {

@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - Warp
+  - Repairable
+  - Spike
+  - Projectile
   layers:
   - Default
   - TransparentFX
@@ -18,8 +21,8 @@ TagManager:
   - Platform
   - Trap
   - Warp
-  - 
-  - 
+  - Repairable
+  - Projectile
   - 
   - 
   - 
