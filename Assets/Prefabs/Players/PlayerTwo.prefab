@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5250390222039885768}
   - component: {fileID: 5250390222039885769}
   m_Layer: 0
-  m_Name: PlayerOne
+  m_Name: PlayerTwo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -70,7 +70,7 @@ MonoBehaviour:
   isDead: 0
   isPlayable: 1
   playerSettings: {fileID: 11400000, guid: 43d1da2d632b1c347857221961128814, type: 2}
-  playerInputs: {fileID: 11400000, guid: 9c7791a5022128043a5cf224d831a3f5, type: 2}
+  playerInputs: {fileID: 11400000, guid: 4fd314730cbceec47bb7502f354438a9, type: 2}
 --- !u!212 &5250390222039885775
 SpriteRenderer:
   m_ObjectHideFlags: 0
