@@ -6,7 +6,7 @@ using UnityEngine;
 public class Movable : MonoBehaviour
 {
     #region Events
-    public event Action<Vector3>    OnHitSomething =        null;
+    public event Action<RaycastHit2D>   OnHitSomething =        null;
     #endregion
 
     #region Fields / Properties
@@ -14,37 +14,37 @@ public class Movable : MonoBehaviour
      ***   CONSTANTS   ***
      ********************/
 
-    public const float              MinMovementDistance =   .001f;
+    public const float                  MinMovementDistance =   .001f;
 
     /**********************
      *****   FIELDS   *****
      *********************/
 
     [SerializeField, HorizontalLine(order = 0), Section("PARAMETERS", 50, 0, order = 1), Space(order = 2)]
-    protected bool                  isFacingRight =         true;
+    protected bool                      isFacingRight =         true;
 
     [SerializeField]
-    protected bool                  isGrounded =            true;
+    protected bool                      isGrounded =            true;
 
     [SerializeField, PropertyField]
-    protected bool                  useGravity =            false;
+    protected bool                      useGravity =            false;
 
     [SerializeField, Min(0)]
-    protected float                 speed =                 3;
+    protected float                     speed =                 3;
 
 
     [SerializeField, HorizontalLine(2, SuperColor.Chocolate, order = 0), Section("REFERENCES", 50, 0, order = 1), Space(order = 2)]
-    protected new Collider2D        collider =              null;
+    protected new Collider2D            collider =              null;
 
     [SerializeField, HideInInspector]
-    protected ContactFilter2D       contactFilter =         new ContactFilter2D();
+    protected ContactFilter2D           contactFilter =         new ContactFilter2D();
 
     [SerializeField]
-    protected new Rigidbody2D       rigidbody =             null;
+    protected new Rigidbody2D           rigidbody =             null;
 
 
     [SerializeField, HorizontalLine(2, SuperColor.Crimson, order = 0), Section("VELOCITY", 50, 0, order = 1), Space(order = 2)]
-    protected Vector2               velocity =              Vector2.zero;
+    protected Vector2                   velocity =              Vector2.zero;
 
 
     /**********************
@@ -80,9 +80,9 @@ public class Movable : MonoBehaviour
      ***   COROUTINES   ***
      *********************/
 
-    protected Coroutine             applyGravityCoroutine =     null;
+    protected Coroutine                 applyGravityCoroutine =     null;
 
-    protected Coroutine             moveCoroutine =             null;
+    protected Coroutine                 moveCoroutine =             null;
     #endregion
 
     #region Methods
@@ -179,7 +179,6 @@ public class Movable : MonoBehaviour
         // Set isGrounded
         if ((_isGrounded != isGrounded) && (_movement.y != 0))
         {
-            //Debug.Log("IsGrounded => " + _isGrounded);
             isGrounded = _isGrounded;
         }
 
@@ -194,7 +193,7 @@ public class Movable : MonoBehaviour
         // Return if hit something or not
         if (_count > 0)
         {
-            OnHitSomething?.Invoke(_hitResults[_closestHitIndex].point);
+            OnHitSomething?.Invoke(_hitResults[_closestHitIndex]);
             return true;
         }
         return false;
