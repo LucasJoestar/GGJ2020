@@ -61,6 +61,17 @@ public class MyPlayercontroller : Movable
         }
     }
 
+    public override bool IsGrounded
+    {
+        get { return base.IsGrounded; }
+        protected set
+        {
+            base.IsGrounded = value;
+
+            animator?.SetBool("IsGrounded", value);
+        }
+    }
+
     public bool IsPlayable
     {
         get { return isPlayable; }
@@ -344,13 +355,13 @@ public class MyPlayercontroller : Movable
                 // Set isGrounded value to true if a platform is at least .1f down
                 if (_layerName == "Platform")
                 {
-                    if (!isGrounded) isGrounded = true;
+                    if (!isGrounded) IsGrounded = true;
                 }
                 // Kill player if jumped on his head
                 else if (_layerName == "Player")
                 {
                     Debug.Log("Hit Player");
-                    if (_hit[0].normal.y == 1) _hit[0].transform.GetComponent<MyPlayercontroller>()?.Kill();
+                    if (Mathf.Approximately(_hit[0].normal.y, 1)) _hit[0].transform.GetComponent<MyPlayercontroller>()?.Kill();
                 }
             }
         }

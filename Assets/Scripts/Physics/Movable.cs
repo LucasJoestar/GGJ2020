@@ -51,6 +51,15 @@ public class Movable : MonoBehaviour
      ***   PROPERTIES   ***
      *********************/
 
+    public virtual bool IsGrounded
+    {
+        get { return isGrounded; }
+        protected set
+        {
+            isGrounded = value;
+        }
+    }
+
     public bool UseGravity
     {
         get { return useGravity; }
@@ -97,6 +106,7 @@ public class Movable : MonoBehaviour
         isFacingRight = !isFacingRight;
         transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y * -1, transform.localEulerAngles.z);
     }
+
 
     /***************************
      ******   MOVEMENTS   ******
@@ -155,12 +165,12 @@ public class Movable : MonoBehaviour
             Vector2 _normal = _hitResults[_i].normal;
 
             // Y movement related calculs
-            if (_normal.y == 1)
+            if (Mathf.Approximately(_normal.y, 1))
             {
                 _isGrounded = true;
                 velocity.y = 0;
             }
-            else if (_normal.y == -1)
+            else if (Mathf.Approximately(_normal.y, -1))
             {
                 velocity.y = 0;
             }
@@ -180,7 +190,7 @@ public class Movable : MonoBehaviour
         // Set isGrounded
         if ((_isGrounded != isGrounded) && (_movement.y != 0))
         {
-            isGrounded = _isGrounded;
+            IsGrounded = _isGrounded;
         }
 
         // Move the object
