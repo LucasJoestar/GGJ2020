@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: TagsAsset
   m_EditorClassIdentifier: 
   CustomTags:
-    ObjectTags: []
+    ObjectTags:
+    - Name: Warp
+      Color: {r: 0.8414363, g: 0.18396229, b: 1, a: 1}
   UnityBuiltInTags:
     ObjectTags:
     - Name: EditorOnly
@@ -21,7 +23,7 @@ MonoBehaviour:
     - Name: Finish
       Color: {r: 1, g: 1, b: 1, a: 1}
     - Name: GameController
-      Color: {r: 0.56452256, g: 0.9716981, b: 0.38959593, a: 1}
+      Color: {r: 1, g: 1, b: 1, a: 1}
     - Name: MainCamera
       Color: {r: 1, g: 1, b: 1, a: 1}
     - Name: Player
