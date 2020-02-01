@@ -249,6 +249,14 @@ public class MyPlayercontroller : Movable
         GameManager.I.IncreaseScore(!playerInputs.IsPlayerOne);
     }
 
+    public void Kill()
+    {
+        if (isDead) return;
+        IsDead = true;
+
+        Debug.Log(name + " Player is Dead !!");
+    }
+
 
     /***************************
      ******   MOVEMENTS   ******
@@ -286,6 +294,7 @@ public class MyPlayercontroller : Movable
         {
             yield return null;
 
+            // Extract player from overlapping colliders
             _count = collider.OverlapCollider(contactFilter, _colliders);
             for (int _i = 0; _i < _count; _i++)
             {
@@ -295,19 +304,26 @@ public class MyPlayercontroller : Movable
                     Vector2 _movement = _distance.pointA - _distance.pointB;
                     _movement = _movement.normalized * (_movement.magnitude - Physics2D.defaultContactOffset);
                     transform.position = (Vector2)transform.position - _movement;
-                    rigidbody.position -= _movement;
+                    rigidbody.MovePosition(rigidbody.position - _movement);
                 }
             }
 
+            // Cast collider down and executes associated code
             RaycastHit2D[] _hit = new RaycastHit2D[1];
             if (collider.Cast(Vector2.down, _hit, .1f) > 0)
             {
                 string _layerName = LayerMask.LayerToName(_hit[0].transform.gameObject.layer);
-                Debug.Log("Hit => " + _layerName);
 
+                // Set isGrounded value to true if a platform is at least .1f down
                 if (_layerName == "Platform")
                 {
                     if (!isGrounded) isGrounded = true;
+                }
+                // Kill player if jumped on his head
+                else if (_layerName == "Player")
+                {
+                    Debug.Log("Hit Player");
+                    if (_hit[0].normal.y == 1) _hit[0].transform.GetComponent<MyPlayercontroller>()?.Kill();
                 }
             }
         }
