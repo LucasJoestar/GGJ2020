@@ -101,7 +101,7 @@ public class Movable : MonoBehaviour
      *********   FLIP   *********
      ***************************/
 
-    protected void Flip()
+    public void Flip()
     {
         isFacingRight = !isFacingRight;
         transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y * -1, transform.localEulerAngles.z);
@@ -193,13 +193,13 @@ public class Movable : MonoBehaviour
             IsGrounded = _isGrounded;
         }
 
+        // Flip if needed
+        if ((_movement.x != 0) && (Mathf.Sign(_movement.x) != (isFacingRight ? 1 : -1))) Flip();
+
         // Move the object
         _movement = _movement.normalized * _distance;
         transform.position = (Vector2)transform.position + _movement;
         rigidbody.position += _movement;
-
-        // Flip if needed
-        if (Mathf.Sign(_movement.x) != (isFacingRight ? 1 : -1)) Flip();
 
         // Return if hit something or not
         if (_count > 0)

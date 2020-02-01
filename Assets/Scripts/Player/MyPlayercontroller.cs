@@ -44,6 +44,9 @@ public class MyPlayercontroller : Movable
     [SerializeField]
     private Animator                        animator =              null;
 
+    [SerializeField]
+    private Warp                            currentWarp =           null;
+
 
     /**********************
      ***   PROPERTIES   ***
@@ -325,17 +328,33 @@ public class MyPlayercontroller : Movable
 
     private IEnumerator OverlapCollisions()
     {
+        bool _isOverlappingWarp;
         int _count;
         Collider2D[] _colliders = new Collider2D[16];
 
         while (true)
         {
             yield return null;
+            _isOverlappingWarp = false;
+
+            // Set contact filter
+            contactFilter.useTriggers = true;
 
             // Extract player from overlapping colliders
             _count = collider.OverlapCollider(contactFilter, _colliders);
             for (int _i = 0; _i < _count; _i++)
             {
+                if (_colliders[_i].isTrigger)
+                {
+                    if (_colliders[_i].gameObject.HasTag("Warp"))
+                    {
+                        _isOverlappingWarp = true;
+                        if (currentWarp == null) currentWarp = _colliders[_i].GetComponent<Warp>();
+                    }
+
+                    continue;
+                }
+
                 ColliderDistance2D _distance = collider.Distance(_colliders[_i]);
                 if (_distance.isOverlapped)
                 {
@@ -344,6 +363,16 @@ public class MyPlayercontroller : Movable
                     transform.position = (Vector2)transform.position - _movement;
                     rigidbody.MovePosition(rigidbody.position - _movement);
                 }
+            }
+
+            // Set contact filter
+            contactFilter.useTriggers = false;
+
+            // Teleport if needed
+            if (!_isOverlappingWarp && (currentWarp != null))
+            {
+                currentWarp.TryToTeleport(this);
+                currentWarp = null;
             }
 
             // Cast collider down and executes associated code
