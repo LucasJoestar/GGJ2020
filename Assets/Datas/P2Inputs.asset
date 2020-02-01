@@ -16,4 +16,4 @@ MonoBehaviour:
   HorizontalAxis: Horizontal P2
   JumpButton: Jump P2
   RepairButton: Repair P2
-  QuitButton: Repair P2
+  QuitButton: Cancel
