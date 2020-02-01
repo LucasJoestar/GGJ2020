@@ -95,7 +95,7 @@ public class Movable : MonoBehaviour
     protected void Flip()
     {
         isFacingRight = !isFacingRight;
-        transform.localScale = new Vector3(transform.localScale.x * -1, transform.localScale.y, transform.localScale.z);
+        transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y * -1, transform.localEulerAngles.z);
     }
 
     /***************************
