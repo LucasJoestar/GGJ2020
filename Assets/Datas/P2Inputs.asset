@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6662717bf76a12489fe53b24edf18fc, type: 3}
   m_Name: P2Inputs
   m_EditorClassIdentifier: 
+  IsPlayerOne: 0
   HorizontalAxis: Horizontal P2
   JumpButton: Jump P2
   RepairButton: Repair P2
