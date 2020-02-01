@@ -14,7 +14,11 @@ TagManager:
   - 
   - 
   - Player
+<<<<<<< HEAD
   - Plateform
+=======
+  - Platform
+>>>>>>> master
   - Trap
   - 
   - 
