@@ -300,13 +300,15 @@ public class MyPlayercontroller : Movable
             }
 
             RaycastHit2D[] _hit = new RaycastHit2D[1];
-            ContactFilter2D _filter = new ContactFilter2D();
-            _filter.useLayerMask = true;
-            _filter.layerMask = gameObject.layer;
-
-            if (collider.Cast(Vector2.down, _filter, _hit, .1f) > 0)
+            if (collider.Cast(Vector2.down, _hit, .1f) > 0)
             {
-                Debug.Log("Hit => " + _hit[0].transform.name);
+                string _layerName = LayerMask.LayerToName(_hit[0].transform.gameObject.layer);
+                Debug.Log("Hit => " + _layerName);
+
+                if (_layerName == "Platform")
+                {
+                    if (!isGrounded) isGrounded = true;
+                }
             }
         }
     }
