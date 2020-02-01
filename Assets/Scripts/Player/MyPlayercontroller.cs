@@ -24,6 +24,9 @@ public class MyPlayercontroller : Movable
     [SerializeField, PropertyField]
     private bool                            isDead =                false;
 
+    [SerializeField]
+    private bool                            isJumping =             false;
+
     [SerializeField, PropertyField]
     private bool                            isPlayable =            true;
 
@@ -169,6 +172,8 @@ public class MyPlayercontroller : Movable
 
     private IEnumerator DoJump()
     {
+        isJumping = true;
+
         float _timer = playerSettings.JumpMaxTimeLength;
         velocity.y = playerSettings.JumpInitialForce;
 
@@ -181,6 +186,7 @@ public class MyPlayercontroller : Movable
             velocity.y += playerSettings.JumpContinousForce * Time.deltaTime;
         }
 
+        isJumping = false;
         jumpCoroutine = null;
     }
 
@@ -199,6 +205,7 @@ public class MyPlayercontroller : Movable
 
         StopCoroutine(jumpCoroutine);
         jumpCoroutine = null;
+        isJumping = false;
     }
 
 
@@ -247,6 +254,29 @@ public class MyPlayercontroller : Movable
      ******   MOVEMENTS   ******
      **************************/
 
+    private void OnHitSomethingCallback(RaycastHit2D _hit)
+    {
+        // Hit normal checks
+        if (_hit.normal.y == 1)
+        {
+            StopJump();
+        }
+        else if (_hit.normal.y == -1)
+        {
+            StopJump();
+        }
+        else if(_hit.normal.x == 1)
+        {
+            // Do nothing
+        }
+        else if (_hit.normal.x == -1)
+        {
+            // Do nothing
+        }
+
+        // Feedback on hit
+    }
+
     private IEnumerator OverlapCollisions()
     {
         int _count;
@@ -263,6 +293,7 @@ public class MyPlayercontroller : Movable
                 if (_distance.isOverlapped)
                 {
                     Vector2 _movement = _distance.pointA - _distance.pointB;
+                    _movement = _movement.normalized * (_movement.magnitude - Physics2D.defaultContactOffset);
                     transform.position = (Vector2)transform.position - _movement;
                     rigidbody.position -= _movement;
                 }
@@ -299,6 +330,7 @@ public class MyPlayercontroller : Movable
 
         // Start checking inputs
         IsPlayable = true;
+        this.OnHitSomething += OnHitSomethingCallback;
 
         StartCoroutine(OverlapCollisions());
     }
