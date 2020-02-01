@@ -22,10 +22,13 @@ public class MyPlayercontroller : Movable
      *********************/
 
     [SerializeField, PropertyField]
-    private bool                            isPlayable =               true;
+    private bool                            isDead =                false;
+
+    [SerializeField, PropertyField]
+    private bool                            isPlayable =            true;
 
 
-    [SerializeField, HorizontalLine(2, SuperColor.Green, order = 0), Section("References", order = 1), Space(order = 2)]
+    [SerializeField, HorizontalLine(2, SuperColor.Green, order = 0), Section("SETTINGS", order = 1), Space(order = 2)]
     private MyPlayerControllerSettings      playerSettings =        null;
 
     [SerializeField]
@@ -35,6 +38,18 @@ public class MyPlayercontroller : Movable
     /**********************
      ***   PROPERTIES   ***
      *********************/
+
+    public bool IsDead
+    {
+        get { return isDead; }
+        private set
+        {
+            isDead = value;
+            IsPlayable = !value;
+
+            if (!value) Die();
+        }
+    }
 
     public bool IsPlayable
     {
@@ -101,6 +116,13 @@ public class MyPlayercontroller : Movable
         {
             yield return null;
 
+            // Quit input
+            if (Input.GetButtonDown(playerInputs.QuitButton))
+            {
+                Application.Quit();
+                yield break;
+            }
+
             // Repair input
             if (Input.GetButtonDown(playerInputs.RepairButton))
             {
@@ -148,13 +170,13 @@ public class MyPlayercontroller : Movable
     private IEnumerator DoJump()
     {
         float _timer = playerSettings.JumpMaxTimeLength;
-        velocity.y += playerSettings.JumpInitialForce;
+        velocity.y = playerSettings.JumpInitialForce;
 
         // Increase jump force while holding button
         while (Input.GetButton(playerInputs.JumpButton) && (_timer > 0))
         {
             yield return null;
-            _timer += Time.deltaTime;
+            _timer -= Time.deltaTime;
 
             velocity.y += playerSettings.JumpContinousForce * Time.deltaTime;
         }
@@ -208,10 +230,55 @@ public class MyPlayercontroller : Movable
         repairCoroutine = null;
     }
 
+    /**************************
+     *******   REPAIR   *******
+     *************************/
+
+    private void Die()
+    {
+        // Play sound & animations
+
+        // Increase score
+        GameManager.I.IncreaseScore(!playerInputs.IsPlayerOne);
+    }
+
 
     /***************************
      ******   MOVEMENTS   ******
      **************************/
+
+    private IEnumerator OverlapCollisions()
+    {
+        int _count;
+        Collider2D[] _colliders = new Collider2D[16];
+
+        while (true)
+        {
+            yield return null;
+
+            _count = collider.OverlapCollider(contactFilter, _colliders);
+            for (int _i = 0; _i < _count; _i++)
+            {
+                ColliderDistance2D _distance = collider.Distance(_colliders[_i]);
+                if (_distance.isOverlapped)
+                {
+                    Vector2 _movement = _distance.pointA - _distance.pointB;
+                    transform.position = (Vector2)transform.position - _movement;
+                    rigidbody.position -= _movement;
+                }
+            }
+
+            RaycastHit2D[] _hit = new RaycastHit2D[1];
+            ContactFilter2D _filter = new ContactFilter2D();
+            _filter.useLayerMask = true;
+            _filter.layerMask = gameObject.layer;
+
+            if (collider.Cast(Vector2.down, _filter, _hit, .1f) > 0)
+            {
+                Debug.Log("Hit => " + _hit[0].transform.name);
+            }
+        }
+    }
 
     private void ResetSpeed()
     {
@@ -232,6 +299,8 @@ public class MyPlayercontroller : Movable
 
         // Start checking inputs
         IsPlayable = true;
+
+        StartCoroutine(OverlapCollisions());
     }
     #endregion
 

@@ -14,13 +14,13 @@ public class Movable : MonoBehaviour
      ***   CONSTANTS   ***
      ********************/
 
-    public const float              MinMovementDistance =   .011f;
+    public const float              MinMovementDistance =   .001f;
 
     /**********************
      *****   FIELDS   *****
      *********************/
 
-    [SerializeField, Section("Parameters")]
+    [SerializeField, HorizontalLine(order = 0), Section("PARAMETERS", 50, 0, order = 1), Space(order = 2)]
     protected bool                  isFacingRight =         true;
 
     [SerializeField]
@@ -33,20 +33,17 @@ public class Movable : MonoBehaviour
     protected float                 speed =                 3;
 
 
-    [SerializeField, HorizontalLine(2, SuperColor.Chocolate, order = 0), Section("References", order = 1), Space(order = 2)]
+    [SerializeField, HorizontalLine(2, SuperColor.Chocolate, order = 0), Section("REFERENCES", 50, 0, order = 1), Space(order = 2)]
     protected new Collider2D        collider =              null;
 
     [SerializeField, HideInInspector]
     protected ContactFilter2D       contactFilter =         new ContactFilter2D();
 
     [SerializeField]
-    protected LayerMask             obstaclesMask =         new LayerMask();
-
-    [SerializeField]
     protected new Rigidbody2D       rigidbody =             null;
 
 
-    [SerializeField, HorizontalLine(2, SuperColor.Crimson, order = 0), Section("Velocity", order = 1), Space(order = 2)]
+    [SerializeField, HorizontalLine(2, SuperColor.Crimson, order = 0), Section("VELOCITY", 50, 0, order = 1), Space(order = 2)]
     protected Vector2               velocity =              Vector2.zero;
 
 
@@ -150,7 +147,7 @@ public class Movable : MonoBehaviour
         if (_distance < MinMovementDistance) return false;
 
         // Cast collider and collide on obstacles
-        _count = collider.Cast(_movement, contactFilter, _hitResults, _distance + MinMovementDistance);
+        _count = collider.Cast(_movement, contactFilter, _hitResults, _distance + Physics2D.defaultContactOffset);
         for (int _i = 0; _i < _count; _i++)
         {
             // Cache normal hit
@@ -168,7 +165,7 @@ public class Movable : MonoBehaviour
             }
 
             // Get minimum distance
-            float _newDistance = _hitResults[_i].distance - MinMovementDistance;
+            float _newDistance = _hitResults[_i].distance - Physics2D.defaultContactOffset;
             if (_newDistance < _distance)
             {
                 _distance = _newDistance;
@@ -182,6 +179,7 @@ public class Movable : MonoBehaviour
         // Set isGrounded
         if ((_isGrounded != isGrounded) && (_movement.y != 0))
         {
+            //Debug.Log("IsGrounded => " + _isGrounded);
             isGrounded = _isGrounded;
         }
 
@@ -228,7 +226,7 @@ public class Movable : MonoBehaviour
     {
         // Set contact filter
         contactFilter.useLayerMask = true;
-        contactFilter.layerMask = obstaclesMask;
+        contactFilter.layerMask = Physics2D.GetLayerCollisionMask(gameObject.layer);
 
         // Set gravity
         if (useGravity) UseGravity = true;
