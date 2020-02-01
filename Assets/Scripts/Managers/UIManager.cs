@@ -91,6 +91,7 @@ public class UIManager : MonoBehaviour
 
         // Call game end of player victory
         if (_score == playerOneScore.Length) OnEndGame?.Invoke(_isPlayerOneVictory);
+        GameManager.LoadRandomLevel();
     }
 
     public void UpdatePlayersScore(bool _isPlayerOneVictory) => StartCoroutine(DoUpdatePlayersSore(_isPlayerOneVictory));

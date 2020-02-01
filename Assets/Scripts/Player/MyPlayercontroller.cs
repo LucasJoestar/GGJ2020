@@ -60,7 +60,7 @@ public class MyPlayercontroller : Movable
             isDead = value;
             IsPlayable = !value;
 
-            if (!value) Die();
+            if (value) Die();
         }
     }
 
@@ -282,6 +282,8 @@ public class MyPlayercontroller : Movable
     {
         // Stop what needs to be
         StopJump();
+        StopAllCoroutines();
+        collider.enabled = false;
 
         // Play sound & animations
         animator.SetTrigger("Die");
@@ -302,6 +304,11 @@ public class MyPlayercontroller : Movable
     /***************************
      ******   MOVEMENTS   ******
      **************************/
+
+    protected override bool CheckColliderTag(Collider2D _collider)
+    {
+        return !_collider.gameObject.HasTag("Player");
+    }
 
     private void OnHitSomethingCallback(RaycastHit2D _hit)
     {
@@ -354,6 +361,8 @@ public class MyPlayercontroller : Movable
 
                     continue;
                 }
+
+                if (!CheckColliderTag(_colliders[_i])) continue;
 
                 ColliderDistance2D _distance = collider.Distance(_colliders[_i]);
                 if (_distance.isOverlapped)

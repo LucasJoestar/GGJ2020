@@ -118,7 +118,7 @@ public class Movable : MonoBehaviour
         {
             yield return null;
 
-            if (velocity.y > -50) velocity.y += Physics2D.gravity.y * Time.deltaTime;
+            if (velocity.y > -20) velocity.y += Physics2D.gravity.y * Time.deltaTime;
             PerformMovement(new Vector2(0, velocity.y) * Time.deltaTime);
         }
     }
@@ -134,6 +134,10 @@ public class Movable : MonoBehaviour
         moveCoroutine = null;
     }
 
+    protected virtual bool CheckColliderTag(Collider2D _collider)
+    {
+        return true;
+    }
 
     protected virtual float GetSpeed()
     {
@@ -161,6 +165,8 @@ public class Movable : MonoBehaviour
         _count = collider.Cast(_movement, contactFilter, _hitResults, _distance + Physics2D.defaultContactOffset);
         for (int _i = 0; _i < _count; _i++)
         {
+            if (!CheckColliderTag(_hitResults[_i].collider)) continue;
+
             // Cache normal hit
             Vector2 _normal = _hitResults[_i].normal;
 
