@@ -35,6 +35,13 @@ public class GameManager : MonoBehaviour
     private int                     playerTwoScore =        0;
 
 
+    [SerializeField]
+    private GameObject              playerOne =             null;
+
+    [SerializeField]
+    private GameObject              playerTwo =             null;
+
+
     /**********************
      ***   PROPERTIES   ***
      *********************/
@@ -48,6 +55,11 @@ public class GameManager : MonoBehaviour
     {
         get { return playerTwoScore; }
     }
+
+
+    public GameObject PlayerOne { get { return playerOne; } }
+
+    public GameObject PlayerTwo { get { return playerTwo; } }
     #endregion
 
     #region Memory & Coroutines
