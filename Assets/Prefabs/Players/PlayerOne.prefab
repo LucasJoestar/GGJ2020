@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5250390222039885769}
   m_Layer: 8
   m_Name: PlayerOne
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -74,6 +74,7 @@ MonoBehaviour:
   playerSettings: {fileID: 11400000, guid: 43d1da2d632b1c347857221961128814, type: 2}
   playerInputs: {fileID: 11400000, guid: 9c7791a5022128043a5cf224d831a3f5, type: 2}
   animator: {fileID: 3166231813436085602}
+  currentWarp: {fileID: 0}
 --- !u!61 &5250390222039885768
 BoxCollider2D:
   m_ObjectHideFlags: 0

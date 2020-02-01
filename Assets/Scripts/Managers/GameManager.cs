@@ -104,10 +104,11 @@ public class GameManager : MonoBehaviour
         int _index = SceneManager.GetActiveScene().buildIndex;
         int _newIndex = _index;
 
-        while (_newIndex == _index)
+        _newIndex = Random.Range(1, SceneManager.sceneCount);
+        /*while (_newIndex == _index)
         {
-            _newIndex = Random.Range(1, SceneManager.sceneCount);
-        }
+            
+        }*/
 
         SceneManager.LoadScene(_newIndex);
     }
