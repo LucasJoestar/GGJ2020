@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: P1Inputs
   m_EditorClassIdentifier: 
   IsPlayerOne: 1
-  HorizontalAxis: Horizontal
-  JumpButton: Fire1
-  RepairButton: Fire2
+  HorizontalAxis: Horizontal P1
+  JumpButton: Jump P1
+  RepairButton: Repair P1
   QuitButton: Cancel

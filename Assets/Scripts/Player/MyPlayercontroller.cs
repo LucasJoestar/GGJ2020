@@ -30,12 +30,19 @@ public class MyPlayercontroller : Movable
     [SerializeField, PropertyField]
     private bool                            isPlayable =            true;
 
+    [SerializeField, PropertyField]
+    private bool                            isMoving =              false;
+
 
     [SerializeField, HorizontalLine(2, SuperColor.Green, order = 0), Section("SETTINGS", order = 1), Space(order = 2)]
     private MyPlayerControllerSettings      playerSettings =        null;
 
     [SerializeField]
     private MyPlayerInputs                  playerInputs =          null;
+
+
+    [SerializeField]
+    private Animator                        animator =              null;
 
 
     /**********************
@@ -81,6 +88,16 @@ public class MyPlayercontroller : Movable
                 StopCoroutine(checkInputCoroutine);
                 checkInputCoroutine = null;
             }
+        }
+    }
+
+    public bool IsMoving
+    {
+        get { return isMoving; }
+        private set
+        {
+            isMoving = value;
+            animator?.SetBool("IsMoving", value);
         }
     }
     #endregion
@@ -143,16 +160,21 @@ public class MyPlayercontroller : Movable
             float _movement = Input.GetAxis(playerInputs.HorizontalAxis) * speed * Time.deltaTime;
             if (_movement == 0)
             {
+                if (isMoving) IsMoving = false;
+
                 if (speedResetTimer < ResetSpeedTime)
                 {
                     speedResetTimer += Time.deltaTime;
                     if (speedResetTimer >= ResetSpeedTime) ResetSpeed();
                 }
 
+                
                 continue;
             }
 
             if (speedResetTimer > 0) speedResetTimer = 0;
+
+            if (!isMoving) IsMoving = true;
 
             // Increase speed if needed
             if (speedIncreaseTimer < playerSettings.SpeedCurve[playerSettings.SpeedCurve.length - 1].time)
@@ -173,6 +195,7 @@ public class MyPlayercontroller : Movable
     private IEnumerator DoJump()
     {
         isJumping = true;
+        animator?.SetTrigger("Jump");
 
         float _timer = playerSettings.JumpMaxTimeLength;
         velocity.y = playerSettings.JumpInitialForce;
@@ -243,7 +266,11 @@ public class MyPlayercontroller : Movable
 
     private void Die()
     {
+        // Stop what needs to be
+        StopJump();
+
         // Play sound & animations
+        animator.SetTrigger("Die");
 
         // Increase score
         GameManager.I.IncreaseScore(!playerInputs.IsPlayerOne);
