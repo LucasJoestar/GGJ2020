@@ -45,6 +45,13 @@ public class UIManager : MonoBehaviour
     private Image[]                     playerTwoScore =        new Image[] { };
 
 
+    [SerializeField]
+    private RectTransform               repairAnchor =          null;
+
+    [SerializeField]
+    private Image                       repairGauge =           null;
+
+
     /**********************
      ***   PROPERTIES   ***
      *********************/
@@ -70,6 +77,28 @@ public class UIManager : MonoBehaviour
     #region Methods
 
     #region Original Methods
+    /**************************
+     *******   REPAIR   *******
+     *************************/
+
+    public void ActiveRepair(Vector2 _position)
+    {
+        repairAnchor.position = _position;
+        repairAnchor.gameObject.SetActive(true);
+    }
+
+    public void SetReppairPercent(float _percent)
+    {
+        if (_percent == 1)
+        {
+            repairAnchor.gameObject.SetActive(false);
+            return;
+        }
+
+        repairGauge.fillAmount = _percent;
+    }
+
+
     /*************************
      *******   SCORE   *******
      ************************/
