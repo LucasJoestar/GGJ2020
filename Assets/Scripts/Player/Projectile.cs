@@ -11,9 +11,14 @@ public class Projectile : Movable
 
     [SerializeField]
     private int             bounceCount =                   5;
+
+    [SerializeField]
+    private float           rotationSpeed =                 .25f;
     #endregion
 
     #region Memory & Coroutines
+    private bool            doHit =                         false;
+
     private Coroutine       projectileMoveCoroutine =       null;
     #endregion
 
@@ -26,11 +31,26 @@ public class Projectile : Movable
 
     private IEnumerator ProjectileMove()
     {
+        float _timer = 0;
         while (true)
         {
             yield return null;
+
+            if (!doHit)
+            {
+                _timer += Time.deltaTime;
+                if (_timer >= .5f) doHit = true;
+            }
+
+            transform.Rotate(Vector3.up, Time.deltaTime * rotationSpeed);
             PerformMovement(velocity);
         }
+    }
+
+    protected override bool CheckColliderTag(Collider2D _collider)
+    {
+        if (_collider.gameObject.HasTag("Player") && !doHit) return false;
+        return true;
     }
 
     public void Bounce(Vector3 _normal)
@@ -54,7 +74,7 @@ public class Projectile : Movable
 
         bounceCount--;
 
-        if ((bounceCount < 1) || _hit.collider.gameObject.HasTag("Pic"))
+        if ((bounceCount < 1) || _hit.collider.gameObject.HasTag("Spike"))
         {
             DestroyProjectile();
             return;

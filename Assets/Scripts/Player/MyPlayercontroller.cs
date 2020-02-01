@@ -160,8 +160,21 @@ public class MyPlayercontroller : Movable
             // Repair input
             if (Input.GetButtonDown(playerInputs.RepairButton))
             {
-                // Do it
-                continue;
+                Collider2D[] _colliders = new Collider2D[16];
+                contactFilter.useTriggers = true;
+                
+                int _count = collider.OverlapCollider(contactFilter, _colliders);
+                contactFilter.useTriggers = false;
+
+                for (int _i = 0; _i < _count; _i++)
+                {
+                    if (_colliders[_i].gameObject.HasTag("Repairable"))
+                    {
+                        Debug.Log("Repair");
+                        Repair(_colliders[_i].GetComponent<Repairable>());
+                        continue;
+                    }
+                }
             }
 
             // Jump input
@@ -250,20 +263,31 @@ public class MyPlayercontroller : Movable
      *******   REPAIR   *******
      *************************/
 
-    private IEnumerator DoRepair()
+    private IEnumerator DoRepair(Repairable _repairable)
     {
+        UIManager.I?.ActiveRepair(new Vector2(transform.position.x, transform.position.y + 1.5f));
+        UIManager.I?.SetReppairPercent(0);
+        IsPlayable = false;
+
         while (true)
         {
             yield return null;
+            if (Input.GetButtonDown(playerInputs.RepairButton))
+            {
+                if (_repairable.Repair(this)) break;
+            }
         }
 
+        IsPlayable = true;
         repairCoroutine = null;
     }
 
-    public void Repair()
+    public void Repair(Repairable _repairable)
     {
+        if (!_repairable) return;
+
         if (repairCoroutine != null) StopCoroutine(repairCoroutine);
-        repairCoroutine = StartCoroutine(DoRepair());
+        repairCoroutine = StartCoroutine(DoRepair(_repairable));
     }
 
     public void StopRepair()
@@ -298,6 +322,25 @@ public class MyPlayercontroller : Movable
         IsDead = true;
 
         Debug.Log(name + " Player is Dead !!");
+    }
+
+    /**************************
+     ******   SPECIALS   ******
+     *************************/
+
+    public void RepairShield()
+    {
+        Debug.Log("Shield !!");
+    }
+
+    public void RepairPlant()
+    {
+        Debug.Log("Plant !!");
+    }
+
+    public void RepairBalls()
+    {
+        Debug.Log("Balls !!");
     }
 
 
@@ -398,8 +441,11 @@ public class MyPlayercontroller : Movable
                 // Kill player if jumped on his head
                 else if (_layerName == "Player")
                 {
-                    Debug.Log("Hit Player");
-                    if (Mathf.Approximately(_hit[0].normal.y, 1)) _hit[0].transform.GetComponent<MyPlayercontroller>()?.Kill();
+                    if (Mathf.Approximately(_hit[0].normal.y, 1))
+                    {
+                        _hit[0].transform.GetComponent<MyPlayercontroller>()?.Kill();
+                        velocity.y = playerSettings.JumpInitialForce * .75f;
+                    }
                 }
             }
         }
