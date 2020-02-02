@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+#pragma warning disable
 public class UIManager : MonoBehaviour
 {
     #region Events

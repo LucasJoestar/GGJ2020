@@ -8,6 +8,7 @@ TagManager:
   - Repairable
   - Projectile
   - Spikes
+  - Ball
   layers:
   - Default
   - TransparentFX
@@ -23,7 +24,7 @@ TagManager:
   - Warp
   - Repairable
   - Projectile
-  - 
+  - Ball
   - 
   - 
   - 

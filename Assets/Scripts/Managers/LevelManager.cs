@@ -1,9 +1,11 @@
 ﻿using EnhancedEditor;
 using System;
+using System.Linq;
 using UnityEngine;
 
 using Random = UnityEngine.Random;
 
+#pragma warning disable
 public class LevelManager : MonoBehaviour
 {
     [Serializable]
@@ -16,14 +18,31 @@ public class LevelManager : MonoBehaviour
     #region Fields / Properties
     public static LevelManager  I =                     null;
 
-    [SerializeField, Section("SPAWN POINTS")]
+    [SerializeField, HorizontalLine(order = 0), Section("SPAWN POINTS", order = 1), Space(order = 2)]
     private SpawnPoint[]        spawnPoints =           new SpawnPoint[] { };
+
+    [SerializeField, HorizontalLine(2, SuperColor.Indigo, order = 0), Section("REPAIRABLE", order = 1), Space(order = 2)]
+    private float               repairableInterval =    5;
+
+    [SerializeField]
+    private float               repairableMaxAmount =   3;
+
+    [SerializeField]
+    private Repairable[]        repairables =           new Repairable[] { };
     #endregion
 
     #region Methods
-    public void SpawnNewRepairable()
+    public void CallNewRepairable()
     {
+        Invoke("SpawnNewRepairable", repairableInterval);
+    }
 
+    private void SpawnNewRepairable()
+    {
+        Repairable[] _available = repairables.Where(r => !r.gameObject.activeInHierarchy).ToArray();
+        if (_available.Length == 0) return;
+
+        _available[Random.Range(0, _available.Length)].Spawn();
     }
 
 
@@ -62,6 +81,15 @@ public class LevelManager : MonoBehaviour
         // Instantiate players
         Instantiate(GameManager.I.PlayerOne, _playerOnePosition, GameManager.I.PlayerOne.transform.rotation);
         Instantiate(GameManager.I.PlayerTwo, _playerTwoPosition, GameManager.I.PlayerTwo.transform.rotation);
+
+        foreach (Repairable _repairable in repairables)
+        {
+            _repairable.gameObject.SetActive(false);
+        }
+        for (int _i = 0; _i < repairableMaxAmount; _i++)
+        {
+            SpawnNewRepairable();
+        }
     }
 
     private void OnDrawGizmos()
@@ -71,6 +99,37 @@ public class LevelManager : MonoBehaviour
             Gizmos.color = _spawn.SpawnColor.GetColor();
             Gizmos.DrawSphere(_spawn.PlayerOneSpawn.position, .25f);
             Gizmos.DrawSphere(_spawn.PlayerTwoSpawn.position, .25f);
+        }
+
+        foreach (Repairable _repairable in repairables)
+        {
+            switch (_repairable.RepairType)
+            {
+                case RepairTpe.Balls:
+                    Gizmos.color = SuperColor.Red.GetColor(_repairable.gameObject.activeInHierarchy ? 1 : .5f);
+                    break;
+
+                case RepairTpe.Plant:
+                    Gizmos.color = SuperColor.Lime.GetColor(_repairable.gameObject.activeInHierarchy ? 1 : .5f);
+                    break;
+
+                case RepairTpe.Shield:
+                    Gizmos.color = SuperColor.HarvestGold.GetColor(_repairable.gameObject.activeInHierarchy ? 1 : .5f);
+                    break;
+
+                case RepairTpe.Saw:
+                    Gizmos.color = SuperColor.Maroon.GetColor(_repairable.gameObject.activeInHierarchy ? 1 : .5f);
+                    break;
+
+                case RepairTpe.Spikes:
+                    Gizmos.color = SuperColor.Turquoise.GetColor(_repairable.gameObject.activeInHierarchy ? 1 : .5f);
+                    break;
+
+                default:
+                    break;
+            }
+
+            Gizmos.DrawWireCube(_repairable.transform.position, Vector3.one * .5f);
         }
     }
     #endregion

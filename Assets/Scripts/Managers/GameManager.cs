@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 using Random = UnityEngine.Random;
 
+#pragma warning disable
 public class GameManager : MonoBehaviour
 {
     #region Events

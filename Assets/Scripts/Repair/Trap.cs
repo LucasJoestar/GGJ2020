@@ -11,6 +11,9 @@ public class Trap : Repairable
     [SerializeField]
     private new Collider2D          collider =              null;
 
+    [SerializeField]
+    private SpriteRenderer          repairSprite = null;
+
 
     [SerializeField, HorizontalLine(2, SuperColor.Sapphire, order = 0), Section("SETTINGS", order = 1), Space(order = 2)]
     private float                   deactivateTime =        10;
@@ -22,6 +25,7 @@ public class Trap : Repairable
     protected override void Activate(bool _doDestroy)
     {
         base.Activate(_doDestroy);
+        repairSprite.enabled = false;
 
         ActivateAnimator();
         if (repairType == RepairTpe.Spikes) Invoke("ActivateAnimator", deactivateTime);
@@ -32,7 +36,17 @@ public class Trap : Repairable
         animator.SetTrigger("Activate");
     }
 
-    public void Destroy() => Destroy(gameObject);
+    public override void Deactivate()
+    {
+        base.Deactivate();
+        LevelManager.I?.CallNewRepairable();
+    }
+
+    public override void Spawn()
+    {
+        base.Spawn();
+        repairSprite.enabled = true;
+    }
     #endregion
 
     #region Unity Methods
@@ -40,6 +54,7 @@ public class Trap : Repairable
     {
         base.Awake();
         if (collider) collider.isTrigger = true;
+        if (!repairSprite) repairSprite = GetComponentInChildren<SpriteRenderer>();
     }
     #endregion
 

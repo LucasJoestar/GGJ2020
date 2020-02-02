@@ -1,6 +1,7 @@
 ﻿using EnhancedEditor;
 using UnityEngine;
 
+#pragma warning disable
 public class Example : MonoBehaviour
 {
     /**************************
