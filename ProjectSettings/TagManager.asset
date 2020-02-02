@@ -9,6 +9,7 @@ TagManager:
   - Projectile
   - Spikes
   - Ball
+  - Spike
   layers:
   - Default
   - TransparentFX
