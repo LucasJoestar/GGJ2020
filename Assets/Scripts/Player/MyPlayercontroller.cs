@@ -534,6 +534,11 @@ public class MyPlayercontroller : Movable
             {
                 if (_colliders[_i].isTrigger)
                 {
+                    if (_colliders[_i].gameObject.HasTag("Starter"))
+                    {
+                        GameManager.I?.SetGameReady();
+                        continue;
+                    }
                     if (_colliders[_i].gameObject.HasTag("Spikes"))
                     {
                         Kill(Vector3.up);

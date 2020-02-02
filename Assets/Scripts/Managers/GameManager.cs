@@ -29,6 +29,9 @@ public class GameManager : MonoBehaviour
      *****   FIELDS   *****
      *********************/
 
+    private bool isGameReady = false;
+
+
     [SerializeField, Header("SCORE")]
     private int                     playerOneScore =        0;
 
@@ -75,6 +78,10 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private AudioClip               initSound =             null;
     public AudioClip                InitSound { get { return initSound; } }
+
+    [SerializeField]
+    private AudioClip               scoreSound = null;
+    public AudioClip                Scoresound { get { return scoreSound; } }
 
     [SerializeField]
     private AudioClip               finalRound =            null;
@@ -265,6 +272,7 @@ public class GameManager : MonoBehaviour
             _clip = tutorial;
             playerOneScore = 0;
             playerTwoScore = 0;
+            isGameReady = false;
         }
         else
         {
@@ -305,8 +313,16 @@ public class GameManager : MonoBehaviour
     public void ReloadTuto()
     {
         SceneManager.LoadScene(0);
-        musicSource.clip = tutorial;
     }
+
+    public void SetGameReady()
+    {
+        if (!isGameReady) isGameReady = true;
+        else
+        {
+            LoadRandomLevel();
+        }
+        }
     #endregion
 
     #region Unity Methods

@@ -5424,31 +5424,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameManager
       objectReference: {fileID: 0}
-    - target: {fileID: 5645097956283878879, guid: 87cd01d568c0aed4c93fcc690d815781,
-        type: 3}
-      propertyPath: tutorial
-      value: 
-      objectReference: {fileID: 8300000, guid: e4a4d3c61fd96a2418b2fd8fdb8072a1, type: 3}
-    - target: {fileID: 5645097956283878879, guid: 87cd01d568c0aed4c93fcc690d815781,
-        type: 3}
-      propertyPath: musicOne
-      value: 
-      objectReference: {fileID: 8300000, guid: 72ddb3a1e73e82a46bee649212297c52, type: 3}
-    - target: {fileID: 5645097956283878879, guid: 87cd01d568c0aed4c93fcc690d815781,
-        type: 3}
-      propertyPath: musicTwo
-      value: 
-      objectReference: {fileID: 8300000, guid: b3d48e5f134cf63468bd957b3963a66b, type: 3}
-    - target: {fileID: 5645097956283878879, guid: 87cd01d568c0aed4c93fcc690d815781,
-        type: 3}
-      propertyPath: musicThree
-      value: 
-      objectReference: {fileID: 8300000, guid: a2ba6c539c3e62f4498dc48a96aefa7e, type: 3}
-    - target: {fileID: 5645097956283878879, guid: 87cd01d568c0aed4c93fcc690d815781,
-        type: 3}
-      propertyPath: victory
-      value: 
-      objectReference: {fileID: 8300000, guid: a5c8788950e7b024d924998bb29e1c7d, type: 3}
     - target: {fileID: 5645097956303173964, guid: 87cd01d568c0aed4c93fcc690d815781,
         type: 3}
       propertyPath: m_Camera

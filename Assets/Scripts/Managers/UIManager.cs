@@ -131,6 +131,7 @@ public class UIManager : MonoBehaviour
 
         yield return new WaitForSeconds(.5f);
 
+        GameManager.PlayClipAtPoint(GameManager.I?.Scoresound, Camera.main.transform.position);
         int _score = _isPlayerOneVictory ? GameManager.I.PlayerOneScore : GameManager.I.PlayerTwoScore;
 
         if (_isPlayerOneVictory) playerOneScore[_score - 1].SetTrigger("Activate");
