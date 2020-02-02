@@ -49,7 +49,7 @@ MonoBehaviour:
   isFacingRight: 1
   isGrounded: 1
   useGravity: 0
-  speed: 3
+  speed: 5
   collider: {fileID: 4620995462510565189}
   contactFilter:
     useTriggers: 0
@@ -66,9 +66,11 @@ MonoBehaviour:
     minNormalAngle: 0
     maxNormalAngle: 0
   rigidbody: {fileID: 4620995462510565194}
+  currentWarp: {fileID: 0}
   velocity: {x: 0, y: 0}
   bounceCount: 5
   rotationSpeed: 1
+  originalVelocity: {x: 0, y: 0}
 --- !u!212 &4620995462510565188
 SpriteRenderer:
   m_ObjectHideFlags: 0

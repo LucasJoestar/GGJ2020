@@ -4780,7 +4780,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4397650975738109146}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 9.28, y: 0.36, z: -16.822266}
+  m_LocalPosition: {x: 9.28, y: 0.36, z: 0}
   m_LocalScale: {x: 5, y: 5, z: 5}
   m_Children:
   - {fileID: 1874057273247707384}
@@ -4818,7 +4818,7 @@ MonoBehaviour:
   repairAmount: 10
   trigger: {fileID: 4397650975738109144}
   repairType: -3
-  Event:
+  event:
     m_PersistentCalls:
       m_Calls: []
 --- !u!212 &4397650975738109142
