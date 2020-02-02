@@ -104,7 +104,7 @@ public class Movable : MonoBehaviour
      *********   FLIP   *********
      ***************************/
 
-    public void Flip()
+    public virtual void Flip()
     {
         isFacingRight = !isFacingRight;
         transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y * -1, transform.localEulerAngles.z);

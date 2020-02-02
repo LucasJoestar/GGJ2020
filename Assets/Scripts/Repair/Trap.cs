@@ -12,7 +12,7 @@ public class Trap : Repairable
     private new Collider2D          collider =              null;
 
     [SerializeField]
-    private SpriteRenderer          repairSprite = null;
+    private GameObject              repairSprite = null;
 
 
     [SerializeField, HorizontalLine(2, SuperColor.Sapphire, order = 0), Section("SETTINGS", order = 1), Space(order = 2)]
@@ -25,7 +25,7 @@ public class Trap : Repairable
     protected override void Activate(bool _doDestroy)
     {
         base.Activate(_doDestroy);
-        repairSprite.enabled = false;
+        repairSprite.SetActive(false);
 
         ActivateAnimator();
         if (repairType == RepairTpe.Spikes)
@@ -49,7 +49,7 @@ public class Trap : Repairable
     public override void Spawn()
     {
         base.Spawn();
-        repairSprite.enabled = true;
+        repairSprite.SetActive(true);
     }
     #endregion
 
@@ -58,7 +58,6 @@ public class Trap : Repairable
     {
         base.Awake();
         if (collider) collider.isTrigger = true;
-        if (!repairSprite) repairSprite = GetComponentInChildren<SpriteRenderer>();
     }
     #endregion
 

@@ -61,6 +61,16 @@ public class MyPlayercontroller : Movable
     private bool                            hasShield =             false;
 
 
+    [SerializeField]
+    private GameObject shieldAnchor = null;
+
+    [SerializeField]
+    private GameObject leftShield = null;
+
+    [SerializeField]
+    private GameObject rightShield = null;
+
+
     /**********************
      ***   PROPERTIES   ***
      *********************/
@@ -419,6 +429,7 @@ public class MyPlayercontroller : Movable
     private IEnumerator Shield()
     {
         // Feedback
+        shieldAnchor.SetActive(true);
 
         float _timer = playerSettings.ShieldActivationTime;
         GameManager.PlayClipAtPoint(GameManager.I?.ShieldAura, transform.position);
@@ -431,6 +442,7 @@ public class MyPlayercontroller : Movable
         }
 
         hasShield = false;
+        shieldAnchor.SetActive(false);
         GameManager.PlayClipAtPoint(GameManager.I?.ShieldAura, transform.position);
         LevelManager.I?.CallNewRepairable();
 
@@ -478,6 +490,21 @@ public class MyPlayercontroller : Movable
     /***************************
      ******   MOVEMENTS   ******
      **************************/
+
+    public override void Flip()
+    {
+        base.Flip();
+        if (isFacingRight)
+        {
+            rightShield.SetActive(true);
+            leftShield.SetActive(false);
+        }
+        else
+        {
+            rightShield.SetActive(false);
+            leftShield.SetActive(true);
+        }
+    }
 
     protected override bool CheckColliderTag(RaycastHit2D _hit, Vector2 _movement)
     {

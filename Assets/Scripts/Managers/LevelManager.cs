@@ -43,7 +43,8 @@ public class LevelManager : MonoBehaviour
 
     private void SpawnNewRepairable()
     {
-        Repairable[] _available = repairables.Where(r => !r.gameObject.activeInHierarchy).ToArray();
+        RepairTpe[] _taken = repairables.Where(r => r.gameObject.activeInHierarchy).Select(r => r.RepairType).Distinct().ToArray();
+        Repairable[] _available = repairables.Where(r => !r.gameObject.activeInHierarchy && !_taken.Contains(r.RepairType)).ToArray();
         if (_available.Length == 0) return;
 
         _available[Random.Range(0, _available.Length)].Spawn();
@@ -107,6 +108,7 @@ public class LevelManager : MonoBehaviour
 
         foreach (Repairable _repairable in repairables)
         {
+            if (!_repairable) continue;
             switch (_repairable.RepairType)
             {
                 case RepairTpe.Balls:

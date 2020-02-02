@@ -7,10 +7,20 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 295047760233113787, guid: 9e6930f6217caf1418c89ec76b4baaa7,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 715397785238278565, guid: 9e6930f6217caf1418c89ec76b4baaa7,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5250390222039885770, guid: 9e6930f6217caf1418c89ec76b4baaa7,
         type: 3}
       propertyPath: m_Name
-      value: PlayerTwo Variant
+      value: PlayerTwo
       objectReference: {fileID: 0}
     - target: {fileID: 5250390222039885773, guid: 9e6930f6217caf1418c89ec76b4baaa7,
         type: 3}
@@ -83,5 +93,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 825171497688146479fa78dcbfedd48c, type: 2}
+    - target: {fileID: 8093018327485050854, guid: 9e6930f6217caf1418c89ec76b4baaa7,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9e6930f6217caf1418c89ec76b4baaa7, type: 3}
