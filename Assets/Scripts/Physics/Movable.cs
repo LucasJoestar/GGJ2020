@@ -137,7 +137,7 @@ public class Movable : MonoBehaviour
         moveCoroutine = null;
     }
 
-    protected virtual bool CheckColliderTag(Collider2D _collider)
+    protected virtual bool CheckColliderTag(RaycastHit2D _hit, Vector2 _movement)
     {
         return true;
     }
@@ -182,7 +182,7 @@ public class Movable : MonoBehaviour
                 continue;
             }
 
-            if (!CheckColliderTag(_hitResults[_i].collider)) continue;
+            if (!CheckColliderTag(_hitResults[_i], _movement)) continue;
 
             // Cache normal hit
             Vector2 _normal = _hitResults[_i].normal;

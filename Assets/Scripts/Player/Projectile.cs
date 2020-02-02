@@ -51,9 +51,9 @@ public class Projectile : Movable
         }
     }
 
-    protected override bool CheckColliderTag(Collider2D _collider)
+    protected override bool CheckColliderTag(RaycastHit2D _hit, Vector2 _movement)
     {
-        if (_collider.gameObject.HasTag("Player") && !doHit) return false;
+        if (_hit.collider.gameObject.HasTag("Player") && !doHit) return false;
         return true;
     }
 
@@ -76,7 +76,7 @@ public class Projectile : Movable
 
         if (_hit.collider.gameObject.HasTag("Player"))
         {
-            _hit.collider.GetComponent<MyPlayercontroller>().Kill();
+            _hit.collider.GetComponent<MyPlayercontroller>().Kill(originalVelocity);
             DestroyProjectile();
             return;
         }
