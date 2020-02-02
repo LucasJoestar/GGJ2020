@@ -28,7 +28,11 @@ public class Trap : Repairable
         repairSprite.enabled = false;
 
         ActivateAnimator();
-        if (repairType == RepairTpe.Spikes) Invoke("ActivateAnimator", deactivateTime);
+        if (repairType == RepairTpe.Spikes)
+        {
+            GameManager.PlayClipAtPoint(GameManager.I?.TrapSound, transform.position);
+            Invoke("ActivateAnimator", deactivateTime);
+        }
     }
 
     public void ActivateAnimator()
@@ -46,8 +50,6 @@ public class Trap : Repairable
     {
         base.Spawn();
         repairSprite.enabled = true;
-
-        GameManager.PlayClipAtPoint(GameManager.I?.TrapSound, transform.position);
     }
     #endregion
 

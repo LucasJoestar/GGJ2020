@@ -1,5 +1,6 @@
 ﻿using EnhancedEditor;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Repairable : MonoBehaviour
 {
@@ -21,6 +22,9 @@ public class Repairable : MonoBehaviour
     [SerializeField]
     protected RepairTpe                 repairType =            RepairTpe.Plant;
 
+    [SerializeField]
+    private UnityEvent                  Event =                 new UnityEvent();
+
 
     /**********************
      ***   PROPERTIES   ***
@@ -38,6 +42,7 @@ public class Repairable : MonoBehaviour
     {
         // Feedback
 
+        Event?.Invoke();
         if (_doDeactivate) Deactivate();
     }
 
@@ -96,7 +101,8 @@ public class Repairable : MonoBehaviour
 
 public enum RepairTpe
 {
-    Balls = -3,
+    Other = -4,
+    Balls,
     Plant,
     Shield,
     Saw,

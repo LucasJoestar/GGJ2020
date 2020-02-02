@@ -46,41 +46,46 @@ public class GameManager : MonoBehaviour
     [SerializeField, Header("MUSIC")]
     private AudioSource             musicSource =           null;
 
-
+    // Done
     [SerializeField]
     private AudioClip               tutorial =              null;
 
+    // Done
     [SerializeField]
     private AudioClip               musicOne =              null;
 
+    // Done
     [SerializeField]
     private AudioClip               musicTwo =              null;
 
+    // Done
     [SerializeField]
     private AudioClip               musicThree =            null;
 
+    // Done
     [SerializeField]
     private AudioClip               victory =               null;
-
     public AudioClip                Victory { get { return victory; } }
 
 
     [SerializeField, Header("SOUNDS")]
-    private AudioClip               fightLoop =             null;
-    public AudioClip                FightLoop { get { return fightLoop; } }
+    private AudioClip               fight =             null;
+    public AudioClip                Fight { get { return fight; } }
 
     [SerializeField]
-    private AudioClip               fightBonus =             null;
-    public AudioClip                FightBonus { get { return fightBonus; } }
+    private AudioClip               initSound =             null;
+    public AudioClip                InitSound { get { return initSound; } }
 
     [SerializeField]
     private AudioClip               finalRound =            null;
     public AudioClip                FinalRound { get { return finalRound; } }
 
+    // Done
     [SerializeField]
     private AudioClip               playerOneWin =          null;
     public AudioClip                PlayerOneWin { get { return playerOneWin; } }
 
+    // Done
     [SerializeField]
     private AudioClip               playerTwoWin =          null;
     public AudioClip                PlayerTwoWin { get { return playerTwoWin; } }
@@ -108,14 +113,17 @@ public class GameManager : MonoBehaviour
     private AudioClip               jumpSound =             null;
     public AudioClip                JumpSound { get { return jumpSound; } }
 
+    // Done
     [SerializeField]
     private AudioClip               organicImpact =         null;
     public AudioClip                OrganicImpact { get { return organicImpact; } }
 
+    // Done
     [SerializeField]
     private AudioClip               organicShot =           null;
     public AudioClip                OrganicShot { get { return organicShot; } }
 
+    // Check volume
     [SerializeField]
     private AudioClip               repairLoop =            null;
     public AudioClip                RepairLoop { get { return repairLoop; } }
@@ -146,6 +154,7 @@ public class GameManager : MonoBehaviour
     private AudioClip               ballWhoosh =            null;
     public AudioClip                BallWhoosh { get { return ballWhoosh; } }
 
+    // Done
     [SerializeField]
     private AudioClip               shieldAura =            null;
     public AudioClip                ShieldAura { get { return shieldAura; } }
@@ -214,6 +223,14 @@ public class GameManager : MonoBehaviour
     /*************************
      *******   SOUND   *******
      ************************/
+
+    public void PlayVictory()
+    {
+        // Play victory
+        musicSource.clip = victory;
+        musicSource.time = 0;
+        musicSource.Play();
+    }
 
     public static void PlayClipAtPoint(AudioClip _clip, Vector2 _position, float _volume = 1)
     {

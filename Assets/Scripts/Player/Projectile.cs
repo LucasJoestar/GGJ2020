@@ -107,6 +107,7 @@ public class Projectile : Movable
             projectileMoveCoroutine = null;
         }
 
+        GameManager.PlayClipAtPoint(GameManager.I?.OrganicImpact, transform.position);
         Destroy(gameObject);
     }
 

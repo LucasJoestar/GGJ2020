@@ -43,6 +43,9 @@ public class MyPlayercontroller : Movable
 
 
     [SerializeField]
+    private AudioSource                     audioSource =              null;
+
+    [SerializeField]
     private Animator                        animator =              null;
 
     [SerializeField]
@@ -289,6 +292,9 @@ public class MyPlayercontroller : Movable
         UIManager.I?.SetReppairPercent(0);
         IsPlayable = false;
 
+        audioSource.time = 0;
+        audioSource.Play();
+
         while (true)
         {
             yield return null;
@@ -297,6 +303,8 @@ public class MyPlayercontroller : Movable
                 if (_repairable.Repair(this)) break;
             }
         }
+
+        audioSource.Stop();
 
         IsPlayable = true;
         repairCoroutine = null;
@@ -314,6 +322,7 @@ public class MyPlayercontroller : Movable
     {
         if (repairCoroutine == null) return;
 
+        audioSource.Stop();
         StopCoroutine(repairCoroutine);
         repairCoroutine = null;
     }
@@ -327,6 +336,7 @@ public class MyPlayercontroller : Movable
         // Stop what needs to be
         StopJump();
         StopAllCoroutines();
+        audioSource.Stop();
         collider.enabled = false;
 
         // Play sound & animations
@@ -371,6 +381,7 @@ public class MyPlayercontroller : Movable
             yield return new WaitForSeconds(.1f);
             _timer -= .1f;
             Instantiate(playerSettings.Projectile, attackTransform.position, Quaternion.identity).GetComponent<Projectile>().Init(new Vector2(isFacingRight ? 1 : -1, -.25f));
+            GameManager.PlayClipAtPoint(GameManager.I?.OrganicShot, attackTransform.position);
         }
 
         isPlantActivated = false;
@@ -393,6 +404,7 @@ public class MyPlayercontroller : Movable
             _timer -= _wait;
 
             Instantiate(playerSettings.Balls, attackTransform.position, Quaternion.identity).GetComponent<Ball>().Init(isFacingRight);
+            GameManager.PlayClipAtPoint(GameManager.I?.OrganicShot, attackTransform.position);
         }
 
         isBallsTrapActivated = false;
@@ -406,6 +418,7 @@ public class MyPlayercontroller : Movable
         // Feedback
 
         float _timer = playerSettings.ShieldActivationTime;
+        GameManager.PlayClipAtPoint(GameManager.I?.ShieldAura, transform.position);
         hasShield = true;
 
         while (_timer > 0)
@@ -415,6 +428,7 @@ public class MyPlayercontroller : Movable
         }
 
         hasShield = false;
+        GameManager.PlayClipAtPoint(GameManager.I?.ShieldAura, transform.position);
         LevelManager.I?.CallNewRepairable();
 
         shieldCoroutine = null;

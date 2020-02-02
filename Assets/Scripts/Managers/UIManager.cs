@@ -136,6 +136,11 @@ public class UIManager : MonoBehaviour
         if (_isPlayerOneVictory) playerOneScore[_score - 1].SetTrigger("Activate");
         else playerTwoScore[_score - 1].SetTrigger("Activate");
 
+        if (_score == playerOneScore.Length)
+        {
+            GameManager.PlayClipAtPoint(_isPlayerOneVictory ? GameManager.I?.PlayerOneWin : GameManager.I?.PlayerTwoWin, Camera.main.transform.position);
+        }
+
         yield return new WaitForSeconds(1.5f);
 
         // Call game end of player victory
@@ -146,7 +151,8 @@ public class UIManager : MonoBehaviour
             if (_isPlayerOneVictory) playerOneVictory.SetActive(true);
             else playerTwoVictory.SetActive(true);
 
-            yield return new WaitForSeconds(3);
+            GameManager.I?.PlayVictory();
+            yield return new WaitForSeconds(GameManager.I.Victory.length + 1);
 
             GameManager.I?.ReloadTuto();
         }
