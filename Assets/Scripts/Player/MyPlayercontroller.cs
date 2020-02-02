@@ -366,7 +366,7 @@ public class MyPlayercontroller : Movable
 
             yield return new WaitForSeconds(.1f);
             _timer -= .1f;
-            Instantiate(playerSettings.Projectile, attackTransform.position, Quaternion.identity).GetComponent<Projectile>().Init(new Vector2(isFacingRight ? 1 : -1, -1));
+            Instantiate(playerSettings.Projectile, attackTransform.position, Quaternion.identity).GetComponent<Projectile>().Init(new Vector2(isFacingRight ? 1 : -1, -.25f));
         }
 
         isPlantActivated = false;
