@@ -39,3 +39,10 @@ MonoBehaviour:
   JumpInitialForce: 12
   JumpContinousForce: 0.2
   JumpMaxTimeLength: 0.5
+  Projectile: {fileID: 4620995462510565192, guid: 27f3158c26b7a2d4faf0bba4a562df49,
+    type: 3}
+  PlantProjectileInterval: 1.5
+  PlantActivationTime: 10
+  ShieldActivationTime: 5
+  BallsProjectileInterval: 0.2
+  BallsActivationTime: 5
