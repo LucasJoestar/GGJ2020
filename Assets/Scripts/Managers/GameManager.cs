@@ -280,7 +280,7 @@ public class GameManager : MonoBehaviour
                     break;
 
                 case 2:
-                    _clip = musicTwo;
+                    _clip = musicThree;
                     break;
 
                 default:

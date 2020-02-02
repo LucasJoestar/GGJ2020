@@ -483,6 +483,8 @@ public class MyPlayercontroller : Movable
         {
             if (Mathf.Approximately(_hit.normal.y, 1) && _movement.y < 0)
             {
+                GameManager.PlayClipAtPoint(GameManager.I?.OrganicImpact, attackTransform.position);
+
                 _hit.transform.GetComponent<MyPlayercontroller>()?.Kill(Vector3.right * (isFacingRight ? 1 : -1));
                 velocity.y = playerSettings.JumpInitialForce * .75f;
             }
