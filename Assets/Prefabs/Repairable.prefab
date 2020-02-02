@@ -62,7 +62,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   repairAmount: 10
-  collider: {fileID: 8206604474953243578}
+  trigger: {fileID: 8206604474953243578}
   repairType: -2
 --- !u!212 &8206604474953243572
 SpriteRenderer:

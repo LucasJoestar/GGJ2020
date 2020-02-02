@@ -14,34 +14,51 @@ public class Ball : Movable
 
     [SerializeField]
     private float                   rotationSpeed =                 .25f;
+
+
+    [SerializeField]
+    private Animator                animator =                      null;
     #endregion
 
     #region Memory & Coroutines
     private bool                    doHit =                         false;
 
     private Coroutine               BallMoveCoroutine =             null;
+
+
+    public bool DoHit { get { return doHit; } }
     #endregion
 
     #region Methods
-
-    #region Original Methods
     /***********************
      *****   METHODS   *****
      **********************/
-
-    private IEnumerator BallMove()
+    private IEnumerator Activate()
     {
+        OnHitSomething += (RaycastHit2D _hit) =>
+        {
+            transform.position = _hit.point;
+            UseGravity = false;
+            animator.SetTrigger("Activate");
+        };
+
         float _timer = 0;
         while (true)
         {
-            yield return null;
-            transform.Rotate(Vector3.up, Time.deltaTime * rotationSpeed);
-
             if (!doHit)
             {
+                transform.Rotate(Vector3.up, Time.deltaTime * rotationSpeed);
+
+                yield return null;
                 _timer += Time.deltaTime;
                 if (_timer >= .5f) doHit = true;
+
+                continue;
             }
+
+            yield return new WaitForSeconds(destructionTime);
+            animator.SetTrigger("Activate");
+            yield break;
         }
     }
 
@@ -51,33 +68,24 @@ public class Ball : Movable
         return true;
     }
 
+    public void Destroy() => Destroy(gameObject);
+
     public void DestroyBall()
     {
-        // Feedback time
-
         if (BallMoveCoroutine != null)
         {
             StopCoroutine(BallMoveCoroutine);
             BallMoveCoroutine = null;
         }
 
-        Destroy(gameObject);
+        // Feedback time
+        animator.SetTrigger("Activate");
     }
 
     public void Init(bool _isFacingRight)
     {
-        velocity = Vector2.right * (_isFacingRight ? 1 : -1) * speed;
-        BallMoveCoroutine = StartCoroutine(BallMove());
+        velocity = Vector2.left * (_isFacingRight ? 1 : -1) * speed;
+        BallMoveCoroutine = StartCoroutine(Activate());
     }
-    #endregion
-
-    #region Unity Methods
-    // Start is called before the first frame update
-    protected override void Start()
-    {
-        base.Start();
-    }
-    #endregion
-
     #endregion
 }

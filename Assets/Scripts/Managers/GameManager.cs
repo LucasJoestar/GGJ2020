@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 using Random = UnityEngine.Random;
 
+#pragma warning disable
 public class GameManager : MonoBehaviour
 {
     #region Events
@@ -28,7 +29,7 @@ public class GameManager : MonoBehaviour
      *****   FIELDS   *****
      *********************/
 
-    [SerializeField]
+    [SerializeField, Header("SCORE")]
     private int                     playerOneScore =        0;
 
     [SerializeField]
@@ -40,6 +41,122 @@ public class GameManager : MonoBehaviour
 
     [SerializeField]
     private GameObject              playerTwo =             null;
+
+
+    [SerializeField, Header("MUSIC")]
+    private AudioSource             musicSource =           null;
+
+
+    [SerializeField]
+    private AudioClip               tutorial =              null;
+
+    [SerializeField]
+    private AudioClip               musicOne =              null;
+
+    [SerializeField]
+    private AudioClip               musicTwo =              null;
+
+    [SerializeField]
+    private AudioClip               musicThree =            null;
+
+    [SerializeField]
+    private AudioClip               victory =               null;
+
+    public AudioClip                Victory { get { return victory; } }
+
+
+    [SerializeField, Header("SOUNDS")]
+    private AudioClip               fightLoop =             null;
+    public AudioClip                FightLoop { get { return fightLoop; } }
+
+    [SerializeField]
+    private AudioClip               fightBonus =             null;
+    public AudioClip                FightBonus { get { return fightBonus; } }
+
+    [SerializeField]
+    private AudioClip               finalRound =            null;
+    public AudioClip                FinalRound { get { return finalRound; } }
+
+    [SerializeField]
+    private AudioClip               playerOneWin =          null;
+    public AudioClip                PlayerOneWin { get { return playerOneWin; } }
+
+    [SerializeField]
+    private AudioClip               playerTwoWin =          null;
+    public AudioClip                PlayerTwoWin { get { return playerTwoWin; } }
+
+
+    [SerializeField]
+    private AudioClip               roundOne =              null;
+    public AudioClip                RoundOne { get { return roundOne; } }
+
+    [SerializeField]
+    private AudioClip               roundTwo =              null;
+    public AudioClip                RoundTwo { get { return roundTwo; } }
+
+    [SerializeField]
+    private AudioClip               roundThree =            null;
+    public AudioClip                RoundThree { get { return roundThree; } }
+
+    [SerializeField]
+    private AudioClip               roundFour =             null;
+    public AudioClip                RoundFour { get { return roundFour; } }
+
+
+    // Check volume
+    [SerializeField]
+    private AudioClip               jumpSound =             null;
+    public AudioClip                JumpSound { get { return jumpSound; } }
+
+    [SerializeField]
+    private AudioClip               organicImpact =         null;
+    public AudioClip                OrganicImpact { get { return organicImpact; } }
+
+    [SerializeField]
+    private AudioClip               organicShot =           null;
+    public AudioClip                OrganicShot { get { return organicShot; } }
+
+    [SerializeField]
+    private AudioClip               repairLoop =            null;
+    public AudioClip                RepairLoop { get { return repairLoop; } }
+
+    // Check volume
+    [SerializeField]
+    private AudioClip               warpSound =             null;
+    public AudioClip                WarpSound { get { return warpSound; } }
+
+
+    // Check volume
+    [SerializeField]
+    private AudioClip               trapSpawn =             null;
+    public AudioClip                TrapSound { get { return trapSpawn; } }
+
+    // Check volume
+    [SerializeField]
+    private AudioClip               turretInstall =         null;
+    public AudioClip                TurretInstall { get { return turretInstall; } }
+
+    // Check volume
+    [SerializeField]
+    private AudioClip               spikeDeath =            null;
+    public AudioClip                SpikeDeath { get { return spikeDeath; } }
+
+    //Check volume
+    [SerializeField]
+    private AudioClip               ballWhoosh =            null;
+    public AudioClip                BallWhoosh { get { return ballWhoosh; } }
+
+    [SerializeField]
+    private AudioClip               shieldAura =            null;
+    public AudioClip                ShieldAura { get { return shieldAura; } }
+
+    [SerializeField]
+    private AudioClip               sawTrapSpawn =          null;
+    public AudioClip                SawTrapSpawn { get { return sawTrapSpawn; } }
+
+    [SerializeField]
+    private AudioClip               sawTrapLoop =           null;
+    public AudioClip                SawTrapLoop { get { return sawTrapLoop; } }
 
 
     /**********************
@@ -80,18 +197,6 @@ public class GameManager : MonoBehaviour
     #region Methods
 
     #region Original Methods
-    /*********************************
-     ***   MANAGER INSTANTIATION   ***
-     ********************************/
-
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
-    public static void CreateInstance()
-    {
-        I = new GameObject("Game Manager").AddComponent<GameManager>();
-        DontDestroyOnLoad(I);
-    }
-
-
     /*************************
      *******   SCORE   *******
      ************************/
@@ -106,12 +211,21 @@ public class GameManager : MonoBehaviour
         UIManager.I?.UpdatePlayersScore(_isPlayerOne);
     }
 
-        
+    /*************************
+     *******   SOUND   *******
+     ************************/
+
+    public static void PlayClipAtPoint(AudioClip _clip, Vector2 _position, float _volume = 1)
+    {
+        if (_clip) AudioSource.PlayClipAtPoint(_clip, _position, _volume);
+    }
+
+
     /*************************
      *******   LEVEL   *******
      ************************/
 
-    public static void LoadRandomLevel()
+    public void LoadRandomLevel()
     {
         int _index = SceneManager.GetActiveScene().buildIndex;
         int _newIndex = _index;
@@ -125,9 +239,56 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(_newIndex);
     }
 
-    public static void ReloadLevel()
+    private void OnSceneLoaded(Scene _scene, LoadSceneMode _mode)
+    {
+        AudioClip _clip = null;
+
+        if (_scene.buildIndex == 0)
+        {
+            _clip = tutorial;
+            playerOneScore = 0;
+            playerTwoScore = 0;
+        }
+        else
+        {
+            int _higherScore = playerTwoScore > playerOneScore ? playerTwoScore : playerOneScore;
+            switch (_higherScore)
+            {
+                case 0:
+                    _clip = musicOne;
+                    break;
+
+                case 1:
+                    _clip = musicTwo;
+                    break;
+
+                case 2:
+                    _clip = musicTwo;
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
+        // Changed music if needed
+        if (_clip != musicSource.clip)
+        {
+            musicSource.clip = _clip;
+            musicSource.time = 0;
+            musicSource.Play();
+        }
+    }
+
+    public void ReloadLevel()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void ReloadTuto()
+    {
+        SceneManager.LoadScene(0);
+        musicSource.clip = tutorial;
     }
     #endregion
 
@@ -137,9 +298,18 @@ public class GameManager : MonoBehaviour
      ****************************/
 
     // Start is called before the first frame update
-    private void Start()
+    private void Awake()
     {
+        if (I)
+        {
+            Destroy(this);
+            return;
+        }
 
+        I = this;
+        DontDestroyOnLoad(gameObject);
+
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
     #endregion
 

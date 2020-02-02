@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
+#pragma warning disable
 public class MyPlayercontroller : Movable
 {
     #region Events
@@ -46,7 +47,6 @@ public class MyPlayercontroller : Movable
 
     [SerializeField]
     private Transform                       attackTransform =       null;
-
 
     [SerializeField, HorizontalLine(2, SuperColor.Raspberry, order = 0), Section("STATES", order = 1), Space(order = 2)]
     private bool                            isPlantActivated =      false;
@@ -241,6 +241,9 @@ public class MyPlayercontroller : Movable
         isJumping = true;
         animator?.SetTrigger("Jump");
 
+        // Feedback
+        GameManager.PlayClipAtPoint(GameManager.I?.JumpSound, transform.position);
+
         float _timer = playerSettings.JumpMaxTimeLength;
         velocity.y = playerSettings.JumpInitialForce;
 
@@ -351,6 +354,7 @@ public class MyPlayercontroller : Movable
     private IEnumerator Plant()
     {
         // Feedback
+        GameManager.PlayClipAtPoint(GameManager.I?.TurretInstall, transform.position);
 
         float _timer = playerSettings.PlantActivationTime;
         isPlantActivated = true;
@@ -370,9 +374,7 @@ public class MyPlayercontroller : Movable
         }
 
         isPlantActivated = false;
-
-        yield return new WaitForSeconds(3);
-        LevelManager.I?.SpawnNewRepairable();
+        LevelManager.I?.CallNewRepairable();
 
         plantCoroutine = null;
     }
@@ -386,8 +388,7 @@ public class MyPlayercontroller : Movable
 
         while (_timer > 0)
         {
-            float _wait = Mathf.Min(playerSettings.PlantProjectileInterval, _timer);
-
+            float _wait = Mathf.Min(playerSettings.BallsProjectileInterval, _timer);
             yield return new WaitForSeconds(_wait);
             _timer -= _wait;
 
@@ -395,9 +396,7 @@ public class MyPlayercontroller : Movable
         }
 
         isBallsTrapActivated = false;
-
-        yield return new WaitForSeconds(3);
-        LevelManager.I?.SpawnNewRepairable();
+        LevelManager.I?.CallNewRepairable();
 
         ballsCoroutine = null;
     }
@@ -416,9 +415,7 @@ public class MyPlayercontroller : Movable
         }
 
         hasShield = false;
-
-        yield return new WaitForSeconds(3);
-        LevelManager.I?.SpawnNewRepairable();
+        LevelManager.I?.CallNewRepairable();
 
         shieldCoroutine = null;
     }
@@ -431,7 +428,7 @@ public class MyPlayercontroller : Movable
         if (shieldCoroutine != null)
         {
             StopCoroutine(shieldCoroutine);
-            LevelManager.I?.SpawnNewRepairable();
+            LevelManager.I?.CallNewRepairable();
         }
         shieldCoroutine = StartCoroutine(Shield());
     }
@@ -443,7 +440,7 @@ public class MyPlayercontroller : Movable
         if (plantCoroutine != null)
         {
             StopCoroutine(plantCoroutine);
-            LevelManager.I?.SpawnNewRepairable();
+            LevelManager.I?.CallNewRepairable();
         }
         plantCoroutine = StartCoroutine(Plant());
     }
@@ -455,7 +452,7 @@ public class MyPlayercontroller : Movable
         if (ballsCoroutine != null)
         {
             StopCoroutine(ballsCoroutine);
-            LevelManager.I?.SpawnNewRepairable();
+            LevelManager.I?.CallNewRepairable();
         }
         ballsCoroutine = StartCoroutine(BallsTrap());
     }
@@ -475,7 +472,7 @@ public class MyPlayercontroller : Movable
                 _hit.transform.GetComponent<MyPlayercontroller>()?.Kill(Vector3.right * (isFacingRight ? 1 : -1));
                 velocity.y = playerSettings.JumpInitialForce * .75f;
             }
-            else return false;
+            return false;
         }
         return !_hit.collider.gameObject.HasTag("Projectile");
     }
@@ -524,6 +521,19 @@ public class MyPlayercontroller : Movable
                     if (_colliders[_i].gameObject.HasTag("Spikes"))
                     {
                         Kill(Vector3.up);
+
+                        // Feedback
+                        GameManager.PlayClipAtPoint(GameManager.I?.SpikeDeath, transform.position);
+                        yield break;
+                    }
+                    Ball _ball = _colliders[_i].gameObject.GetComponent<Ball>();
+                    if (_ball && _ball.DoHit)
+                    {
+                        _ball.DestroyBall();
+                        Kill(Vector3.up);
+
+                        // Feedback
+                        GameManager.PlayClipAtPoint(GameManager.I?.BallWhoosh, transform.position);
                         yield break;
                     }
 

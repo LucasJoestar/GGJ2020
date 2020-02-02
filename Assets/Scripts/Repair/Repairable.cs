@@ -20,6 +20,13 @@ public class Repairable : MonoBehaviour
 
     [SerializeField]
     protected RepairTpe                 repairType =            RepairTpe.Plant;
+
+
+    /**********************
+     ***   PROPERTIES   ***
+     *********************/
+
+    public RepairTpe RepairType { get { return repairType; } }
     #endregion
 
     #region Methods
@@ -27,12 +34,14 @@ public class Repairable : MonoBehaviour
      *****   METHODS   *****
      **********************/
 
-    protected virtual void Activate(bool _doDestroy)
+    protected virtual void Activate(bool _doDeactivate)
     {
         // Feedback
 
-        if (_doDestroy) Destroy(gameObject);
+        if (_doDeactivate) Deactivate();
     }
+
+    public virtual void Deactivate() => gameObject.SetActive(false);
 
     public bool Repair(MyPlayercontroller _player)
     {
@@ -67,6 +76,13 @@ public class Repairable : MonoBehaviour
         }
 
         return false;
+    }
+
+    public virtual void Spawn()
+    {
+        repairCount = 0;
+        gameObject.SetActive(true);
+        trigger.enabled = true;
     }
 
 

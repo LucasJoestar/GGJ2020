@@ -122,7 +122,7 @@ public class Movable : MonoBehaviour
             yield return null;
 
             if (velocity.y > -20) velocity.y += Physics2D.gravity.y * Time.deltaTime;
-            PerformMovement(new Vector2(0, velocity.y) * Time.deltaTime);
+            PerformMovement(velocity * Time.deltaTime);
         }
     }
 
