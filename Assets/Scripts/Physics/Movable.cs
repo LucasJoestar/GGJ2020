@@ -154,7 +154,7 @@ public class Movable : MonoBehaviour
         // Create variables
         bool _isGrounded = false;
         int _count = 0;
-        int _closestHitIndex = 0;
+        int _closestHitIndex = -1;
         float _distance = _movement.magnitude;
         RaycastHit2D[] _hitResults = new RaycastHit2D[16];
 
@@ -191,7 +191,11 @@ public class Movable : MonoBehaviour
         }
 
         // Return if not enough movement
-        if (_distance < MinMovementDistance) return true;
+        if (_distance < MinMovementDistance)
+        {
+            OnHitSomething?.Invoke(_hitResults[_closestHitIndex]);
+            return true;
+        }
 
         // Set isGrounded
         if ((_isGrounded != isGrounded) && (_movement.y != 0))
@@ -208,7 +212,7 @@ public class Movable : MonoBehaviour
         rigidbody.position += _movement;
 
         // Return if hit something or not
-        if (_count > 0)
+        if (_closestHitIndex > -1)
         {
             OnHitSomething?.Invoke(_hitResults[_closestHitIndex]);
             return true;

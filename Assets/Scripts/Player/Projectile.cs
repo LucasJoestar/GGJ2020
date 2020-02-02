@@ -20,6 +20,9 @@ public class Projectile : Movable
     private bool            doHit =                         false;
 
     private Coroutine       projectileMoveCoroutine =       null;
+
+    [SerializeField]
+    private Vector2         originalVelocity =              new Vector2();
     #endregion
 
     #region Methods
@@ -43,7 +46,7 @@ public class Projectile : Movable
             }
 
             transform.Rotate(Vector3.up, Time.deltaTime * rotationSpeed);
-            PerformMovement(velocity);
+            PerformMovement(originalVelocity * Time.deltaTime * speed);
         }
     }
 
@@ -53,13 +56,23 @@ public class Projectile : Movable
         return true;
     }
 
-    public void Bounce(Vector3 _normal)
+    public void Bounce(Vector2 _normal)
     {
-        velocity = Vector2.Reflect(velocity, _normal);
+        originalVelocity = Vector2.Reflect(originalVelocity, _normal);
     }
 
     private void CheckHit(RaycastHit2D _hit)
     {
+        // Extract from collider if overlap
+        ColliderDistance2D _distance = collider.Distance(_hit.collider);
+        if (_distance.isOverlapped)
+        {
+            Vector2 _movement = _distance.pointA - _distance.pointB;
+            _movement = _movement.normalized * (_movement.magnitude - Physics2D.defaultContactOffset);
+            transform.position = (Vector2)transform.position - _movement;
+            rigidbody.MovePosition(rigidbody.position - _movement);
+        }
+
         if (_hit.collider.gameObject.HasTag("Player"))
         {
             _hit.collider.GetComponent<MyPlayercontroller>().Kill();
@@ -69,7 +82,7 @@ public class Projectile : Movable
 
         if (_hit.collider.gameObject.HasTag("Projectile"))
         {
-            _hit.collider.GetComponent<Projectile>().Bounce(velocity);
+            _hit.collider.GetComponent<Projectile>().Bounce(originalVelocity);
         }
 
         bounceCount--;
@@ -79,6 +92,8 @@ public class Projectile : Movable
             DestroyProjectile();
             return;
         }
+
+        Bounce(_hit.normal);
     }
 
     public void DestroyProjectile()
@@ -96,7 +111,7 @@ public class Projectile : Movable
 
     public void Init(Vector2 _direction)
     {
-        velocity = _direction.normalized;
+        originalVelocity = _direction.normalized;
         projectileMoveCoroutine = StartCoroutine(ProjectileMove());
     }
     #endregion

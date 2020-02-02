@@ -65,7 +65,6 @@ public class Repairable : MonoBehaviour
             }
 
             Activate(repairType < 0);
-            if ((int)repairType > -1) LevelManager.I?.SpawnNewRepairable();
             return true;
         }
 

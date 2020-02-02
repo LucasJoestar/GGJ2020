@@ -45,7 +45,20 @@ public class MyPlayercontroller : Movable
     private Animator                        animator =              null;
 
     [SerializeField]
+    private Transform                       attackTransform =       null;
+
+    [SerializeField]
     private Warp                            currentWarp =           null;
+
+
+    [SerializeField, HorizontalLine(2, SuperColor.Raspberry, order = 0), Section("STATES", order = 1), Space(order = 2)]
+    private bool                            isPlantActivated =      false;
+
+    [SerializeField]
+    private bool                            isBallsTrapActivated =  false;
+
+    [SerializeField]
+    private bool                            hasShield =             false;
 
 
     /**********************
@@ -126,6 +139,13 @@ public class MyPlayercontroller : Movable
     private Coroutine   jumpCoroutine =             null;
 
     private Coroutine   repairCoroutine =           null;
+
+
+    private Coroutine   shieldCoroutine =           null;
+
+    private Coroutine   plantCoroutine =            null;
+
+    private Coroutine   ballsCoroutine =            null;
 
 
     /**********************
@@ -318,7 +338,7 @@ public class MyPlayercontroller : Movable
 
     public void Kill()
     {
-        if (isDead) return;
+        if (isDead || hasShield) return;
         IsDead = true;
 
         Debug.Log(name + " Player is Dead !!");
@@ -328,19 +348,112 @@ public class MyPlayercontroller : Movable
      ******   SPECIALS   ******
      *************************/
 
+    private IEnumerator Plant()
+    {
+        // Feedback
+
+        float _timer = playerSettings.PlantActivationTime;
+        isPlantActivated = true;
+
+        while (_timer > 0)
+        {
+            float _wait = Mathf.Min(playerSettings.PlantProjectileInterval, _timer);
+
+            yield return new WaitForSeconds(_wait);
+            _timer -= _wait;
+
+            animator.SetTrigger("Attack");
+
+            yield return new WaitForSeconds(.1f);
+            _timer -= .1f;
+            Instantiate(playerSettings.Projectile, attackTransform.position, Quaternion.identity).GetComponent<Projectile>().Init(new Vector2(isFacingRight ? 1 : -1, -.25f));
+        }
+
+        isPlantActivated = false;
+
+        yield return new WaitForSeconds(3);
+        LevelManager.I?.SpawnNewRepairable();
+
+        plantCoroutine = null;
+    }
+
+    private IEnumerator BallsTrap()
+    {
+        // Feedback
+
+        float _timer = playerSettings.BallsActivationTime;
+        isBallsTrapActivated = true;
+
+        while (_timer > 0)
+        {
+            yield return null;
+            _timer -= Time.deltaTime;
+        }
+
+        isBallsTrapActivated = false;
+
+        yield return new WaitForSeconds(3);
+        LevelManager.I?.SpawnNewRepairable();
+
+        ballsCoroutine = null;
+    }
+
+    private IEnumerator Shield()
+    {
+        // Feedback
+
+        float _timer = playerSettings.ShieldActivationTime;
+        hasShield = true;
+
+        while (_timer > 0)
+        {
+            yield return null;
+            _timer -= Time.deltaTime;
+        }
+
+        hasShield = false;
+
+        yield return new WaitForSeconds(3);
+        LevelManager.I?.SpawnNewRepairable();
+
+        shieldCoroutine = null;
+    }
+
+
     public void RepairShield()
     {
         Debug.Log("Shield !!");
+
+        if (shieldCoroutine != null)
+        {
+            StopCoroutine(shieldCoroutine);
+            LevelManager.I?.SpawnNewRepairable();
+        }
+        shieldCoroutine = StartCoroutine(Shield());
     }
 
     public void RepairPlant()
     {
         Debug.Log("Plant !!");
+
+        if (plantCoroutine != null)
+        {
+            StopCoroutine(plantCoroutine);
+            LevelManager.I?.SpawnNewRepairable();
+        }
+        plantCoroutine = StartCoroutine(Plant());
     }
 
     public void RepairBalls()
     {
         Debug.Log("Balls !!");
+
+        if (ballsCoroutine != null)
+        {
+            StopCoroutine(ballsCoroutine);
+            LevelManager.I?.SpawnNewRepairable();
+        }
+        ballsCoroutine = StartCoroutine(BallsTrap());
     }
 
 
@@ -350,7 +463,7 @@ public class MyPlayercontroller : Movable
 
     protected override bool CheckColliderTag(Collider2D _collider)
     {
-        return !_collider.gameObject.HasTag("Player");
+        return !_collider.gameObject.HasTags(new string[] { "Player", "Projectile" });
     }
 
     private void OnHitSomethingCallback(RaycastHit2D _hit)
