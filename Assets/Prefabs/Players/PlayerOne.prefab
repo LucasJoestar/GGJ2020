@@ -97,6 +97,7 @@ MonoBehaviour:
     minNormalAngle: 0
     maxNormalAngle: 0
   rigidbody: {fileID: 5250390222039885769}
+  currentWarp: {fileID: 0}
   velocity: {x: 0, y: 0}
   isDead: 0
   isJumping: 0
@@ -106,7 +107,6 @@ MonoBehaviour:
   playerInputs: {fileID: 11400000, guid: 9c7791a5022128043a5cf224d831a3f5, type: 2}
   animator: {fileID: 3166231813436085602}
   attackTransform: {fileID: 1765207558}
-  currentWarp: {fileID: 0}
   isPlantActivated: 0
   isBallsTrapActivated: 0
   hasShield: 0
@@ -603,7 +603,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: ac1cc30af89dee6468b39774533805f1, type: 2}
+      objectReference: {fileID: 2100000, guid: d020a4eae3a195b43b92e19b5fb1c6e5, type: 2}
     - target: {fileID: 6104174333534787698, guid: 18e38ee43cc549746ae72a2542fcdfa0,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y

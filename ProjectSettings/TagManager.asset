@@ -8,6 +8,7 @@ TagManager:
   - Repairable
   - Projectile
   - Spikes
+  - Spike
   layers:
   - Default
   - TransparentFX
