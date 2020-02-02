@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -29,7 +30,7 @@ public class GameManager : MonoBehaviour
      *****   FIELDS   *****
      *********************/
 
-    private bool isGameReady = false;
+    private List<MyPlayercontroller> playersReady = new List<MyPlayercontroller>();
 
 
     [SerializeField, Header("SCORE")]
@@ -272,7 +273,7 @@ public class GameManager : MonoBehaviour
             _clip = tutorial;
             playerOneScore = 0;
             playerTwoScore = 0;
-            isGameReady = false;
+            playersReady.Clear();
         }
         else
         {
@@ -315,14 +316,15 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(0);
     }
 
-    public void SetGameReady()
+    public void SetGameReady(MyPlayercontroller _player)
     {
-        if (!isGameReady) isGameReady = true;
+        if (playersReady.Contains(_player)) return;
         else
         {
-            LoadRandomLevel();
+            playersReady.Add(_player);
+            if (playersReady.Count == 2) LoadRandomLevel();
         }
-        }
+    }
     #endregion
 
     #region Unity Methods
@@ -335,7 +337,7 @@ public class GameManager : MonoBehaviour
     {
         if (I)
         {
-            Destroy(this);
+            Destroy(gameObject);
             return;
         }
 

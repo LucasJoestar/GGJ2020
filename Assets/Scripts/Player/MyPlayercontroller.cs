@@ -178,7 +178,7 @@ public class MyPlayercontroller : Movable
             }
 
             // Repair input
-            if (Input.GetButtonDown(playerInputs.RepairButton))
+            if (Input.GetKeyDown(playerInputs.IsPlayerOne ? KeyCode.Joystick1Button2 : KeyCode.Joystick2Button2) || Input.GetKeyDown(playerInputs.IsPlayerOne ? KeyCode.Joystick1Button1 : KeyCode.Joystick2Button1) || Input.GetKeyDown(playerInputs.IsPlayerOne ? KeyCode.Joystick1Button3 : KeyCode.Joystick2Button3) || Input.GetKeyDown(playerInputs.IsPlayerOne ? KeyCode.E : KeyCode.RightShift) || Input.GetKeyDown(playerInputs.IsPlayerOne ? KeyCode.F : KeyCode.Return))
             {
                 Collider2D[] _colliders = new Collider2D[16];
                 contactFilter.useTriggers = true;
@@ -198,7 +198,7 @@ public class MyPlayercontroller : Movable
             }
 
             // Jump input
-            if (Input.GetButtonDown(playerInputs.JumpButton))
+            if (Input.GetKeyDown(playerInputs.IsPlayerOne ? KeyCode.Joystick1Button0 : KeyCode.Joystick2Button0) || Input.GetKeyDown(playerInputs.IsPlayerOne ? KeyCode.Space : KeyCode.RightControl))
             {
                 Jump();
             }
@@ -298,7 +298,7 @@ public class MyPlayercontroller : Movable
         while (true)
         {
             yield return null;
-            if (Input.GetButtonDown(playerInputs.RepairButton))
+            if (Input.GetKeyDown(playerInputs.IsPlayerOne ? KeyCode.Joystick1Button2 : KeyCode.Joystick2Button2) || Input.GetKeyDown(playerInputs.IsPlayerOne ? KeyCode.Joystick1Button1 : KeyCode.Joystick2Button1) || Input.GetKeyDown(playerInputs.IsPlayerOne ? KeyCode.Joystick1Button3 : KeyCode.Joystick2Button3) || Input.GetKeyDown(playerInputs.IsPlayerOne ? KeyCode.E : KeyCode.RightShift) || Input.GetKeyDown(playerInputs.IsPlayerOne ? KeyCode.F : KeyCode.Return))
             {
                 if (_repairable.Repair(this)) break;
             }
@@ -481,7 +481,7 @@ public class MyPlayercontroller : Movable
         // Kill player if jumped on his head
         if (_hit.collider.gameObject.HasTag("Player"))
         {
-            if (Mathf.Approximately(_hit.normal.y, 1) && _movement.y < 0)
+            if (Mathf.Approximately(_hit.normal.y, 1) && (_movement.y < 0) && !LevelManager.I.IsTutorial)
             {
                 GameManager.PlayClipAtPoint(GameManager.I?.OrganicImpact, attackTransform.position);
 
@@ -536,7 +536,7 @@ public class MyPlayercontroller : Movable
                 {
                     if (_colliders[_i].gameObject.HasTag("Starter"))
                     {
-                        GameManager.I?.SetGameReady();
+                        GameManager.I?.SetGameReady(this);
                         continue;
                     }
                     if (_colliders[_i].gameObject.HasTag("Spikes"))

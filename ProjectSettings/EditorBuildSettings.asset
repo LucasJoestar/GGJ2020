@@ -14,10 +14,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/LD_1.unity
     guid: 493bbc58028facd4aa6b220464f271f6
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/LD_2.unity
     guid: b206bcbbcfe571a47be57bfa415e85d8
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/LD_3.unity
     guid: c200869b52129be4a84f3987a1ddf1e8
   m_configObjects: {}
