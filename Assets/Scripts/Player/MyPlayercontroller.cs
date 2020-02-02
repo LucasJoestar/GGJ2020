@@ -333,10 +333,13 @@ public class MyPlayercontroller : Movable
         GameManager.I.IncreaseScore(!playerInputs.IsPlayerOne);
     }
 
-    public void Kill()
+    public void Kill(Vector2 _direction)
     {
         if (isDead || hasShield) return;
         IsDead = true;
+
+        UseGravity = true;
+        velocity = _direction.normalized * playerSettings.JumpInitialForce * .75f;
 
         Debug.Log(name + " Player is Dead !!");
     }
@@ -388,7 +391,7 @@ public class MyPlayercontroller : Movable
             yield return new WaitForSeconds(_wait);
             _timer -= _wait;
 
-            //Instantiate(playerSettings.Balls, attackTransform.position, Quaternion.identity).GetComponent<Ball>().Init(isFacingRight);
+            Instantiate(playerSettings.Balls, attackTransform.position, Quaternion.identity).GetComponent<Ball>().Init(isFacingRight);
         }
 
         isBallsTrapActivated = false;
@@ -462,9 +465,19 @@ public class MyPlayercontroller : Movable
      ******   MOVEMENTS   ******
      **************************/
 
-    protected override bool CheckColliderTag(Collider2D _collider)
+    protected override bool CheckColliderTag(RaycastHit2D _hit, Vector2 _movement)
     {
-        return !_collider.gameObject.HasTags(new string[] { "Player", "Projectile" });
+        // Kill player if jumped on his head
+        if (_hit.collider.gameObject.HasTag("Player"))
+        {
+            if (Mathf.Approximately(_hit.normal.y, 1) && _movement.y < 0)
+            {
+                _hit.transform.GetComponent<MyPlayercontroller>()?.Kill(Vector3.right * (isFacingRight ? 1 : -1));
+                velocity.y = playerSettings.JumpInitialForce * .75f;
+            }
+            else return false;
+        }
+        return !_hit.collider.gameObject.HasTag("Projectile");
     }
 
     private void OnHitSomethingCallback(RaycastHit2D _hit)
@@ -510,14 +523,14 @@ public class MyPlayercontroller : Movable
                 {
                     if (_colliders[_i].gameObject.HasTag("Spikes"))
                     {
-                        Kill();
+                        Kill(Vector3.up);
                         yield break;
                     }
 
                     continue;
                 }
 
-                if (!CheckColliderTag(_colliders[_i])) continue;
+                if (_colliders[_i].gameObject.HasTags(new string[] { "Player", "Projectile" })) continue;
 
                 ColliderDistance2D _distance = collider.Distance(_colliders[_i]);
                 if (_distance.isOverlapped)
@@ -542,15 +555,6 @@ public class MyPlayercontroller : Movable
                 if (_layerName == "Platform")
                 {
                     if (!isGrounded) IsGrounded = true;
-                }
-                // Kill player if jumped on his head
-                else if (_layerName == "Player")
-                {
-                    if (Mathf.Approximately(_hit[0].normal.y, 1))
-                    {
-                        _hit[0].transform.GetComponent<MyPlayercontroller>()?.Kill();
-                        velocity.y = playerSettings.JumpInitialForce * .75f;
-                    }
                 }
             }
         }
