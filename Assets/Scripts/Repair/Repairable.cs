@@ -1,8 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using EnhancedEditor;
 using UnityEngine;
 
-[RequireComponent(typeof(CircleCollider2D))]
 public class Repairable : MonoBehaviour
 {
     #region Fields / Properties
@@ -10,18 +8,18 @@ public class Repairable : MonoBehaviour
      *****   FIELDS   *****
      *********************/
 
-    [SerializeField]
+    [SerializeField, HorizontalLine(order = 0), Section("REPAIRABLE", order = 1), Space(order = 2)]
     protected int                       repairAmount =          10;
 
-    private int                         repairCount =           0;
+    protected int                       repairCount =           0;
 
 
     [SerializeField]
-    private new CircleCollider2D        collider =              null;
+    protected CircleCollider2D          trigger =              null;
 
 
     [SerializeField]
-    private RepairTpe                   repairType =            RepairTpe.Plant;
+    protected RepairTpe                 repairType =            RepairTpe.Plant;
     #endregion
 
     #region Methods
@@ -38,7 +36,7 @@ public class Repairable : MonoBehaviour
 
     public bool Repair(MyPlayercontroller _player)
     {
-        collider.enabled = false;
+        trigger.enabled = false;
         repairCount++;
 
         UIManager.I?.SetReppairPercent((float)repairCount / repairAmount);
@@ -74,7 +72,8 @@ public class Repairable : MonoBehaviour
 
     protected virtual void Awake()
     {
-        if (!collider) collider = GetComponent<CircleCollider2D>();
+        if (!trigger) trigger = GetComponentInChildren<CircleCollider2D>();
+        trigger.isTrigger = true;
     }
     #endregion
 }

@@ -38,15 +38,16 @@ public class Projectile : Movable
         while (true)
         {
             yield return null;
+            transform.Rotate(Vector3.up, Time.deltaTime * rotationSpeed);
 
             if (!doHit)
             {
                 _timer += Time.deltaTime;
                 if (_timer >= .5f) doHit = true;
-            }
 
-            transform.Rotate(Vector3.up, Time.deltaTime * rotationSpeed);
-            PerformMovement(originalVelocity * Time.deltaTime * speed);
+                PerformMovement(originalVelocity * Time.deltaTime * speed * 2);
+            }
+            else PerformMovement(originalVelocity * Time.deltaTime * speed);
         }
     }
 

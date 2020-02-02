@@ -6,8 +6,8 @@ TagManager:
   tags:
   - Warp
   - Repairable
-  - Spike
   - Projectile
+  - Spikes
   layers:
   - Default
   - TransparentFX

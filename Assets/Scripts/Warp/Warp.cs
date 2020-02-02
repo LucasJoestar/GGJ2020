@@ -24,22 +24,22 @@ public class Warp : MonoBehaviour
     #endregion
 
     #region Methods
-    public void TryToTeleport(MyPlayercontroller _myPlayer)
+    public void TryToTeleport(Movable _movable)
     {
         if (isXWarp)
         {
             // Teleport if exit map
-            if (Mathf.Sign(transform.position.x - _myPlayer.transform.position.x) == Mathf.Sign(transform.position.x - teleportTransform.position.x)) return;
+            if (Mathf.Sign(transform.position.x - _movable.transform.position.x) == Mathf.Sign(transform.position.x - teleportTransform.position.x)) return;
 
-            _myPlayer.transform.position = new Vector3(teleportTransform.position.x, isXAndYChanged ? teleportTransform.position.y : _myPlayer.transform.position.y, _myPlayer.transform.position.z);
-            _myPlayer.Flip();
+            _movable.transform.position = new Vector3(teleportTransform.position.x, isXAndYChanged ? teleportTransform.position.y : _movable.transform.position.y, _movable.transform.position.z);
+            _movable.Flip();
         }
         else
         {
             // Teleport if exit map
-            if (Mathf.Sign(transform.position.y - _myPlayer.transform.position.y) == Mathf.Sign(transform.position.y - teleportTransform.position.y)) return;
+            if (Mathf.Sign(transform.position.y - _movable.transform.position.y) == Mathf.Sign(transform.position.y - teleportTransform.position.y)) return;
 
-            _myPlayer.transform.position = new Vector3(_myPlayer.transform.position.x, teleportTransform.transform.position.y, _myPlayer.transform.position.z);
+            _movable.transform.position = new Vector3(_movable.transform.position.x, teleportTransform.transform.position.y, _movable.transform.position.z);
         }
     }
 

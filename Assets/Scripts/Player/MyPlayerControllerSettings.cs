@@ -16,7 +16,9 @@ public class MyPlayerControllerSettings : ScriptableObject
 
 
     [HorizontalLine(2, SuperColor.Indigo, order = 0), Section("SPECIALS", order = 1)]
-    public GameObject           Projectile =            null;
+    public GameObject           Projectile =                null;
+
+    public GameObject           Balls =                     null;
 
     public float                PlantProjectileInterval =   1.5f;
 

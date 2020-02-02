@@ -42,6 +42,9 @@ public class Movable : MonoBehaviour
     [SerializeField]
     protected new Rigidbody2D           rigidbody =             null;
 
+    [SerializeField]
+    private Warp                        currentWarp =           null;
+
 
     [SerializeField, HorizontalLine(2, SuperColor.Crimson, order = 0), Section("VELOCITY", 50, 0, order = 1), Space(order = 2)]
     protected Vector2                   velocity =              Vector2.zero;
@@ -153,6 +156,7 @@ public class Movable : MonoBehaviour
     {
         // Create variables
         bool _isGrounded = false;
+        bool _isOverlappingWarp = false;
         int _count = 0;
         int _closestHitIndex = -1;
         float _distance = _movement.magnitude;
@@ -162,9 +166,22 @@ public class Movable : MonoBehaviour
         if (_distance < MinMovementDistance) return false;
 
         // Cast collider and collide on obstacles
+        contactFilter.useTriggers = true;
         _count = collider.Cast(_movement, contactFilter, _hitResults, _distance + Physics2D.defaultContactOffset);
+        contactFilter.useTriggers = false;
         for (int _i = 0; _i < _count; _i++)
         {
+            // Check warp
+            if (_hitResults[_i].collider.isTrigger)
+            {
+                if (_hitResults[_i].collider.gameObject.HasTag("Warp") && collider.Distance(_hitResults[_i].collider).isOverlapped)
+                {
+                    _isOverlappingWarp = true;
+                    if (currentWarp == null) currentWarp = _hitResults[_i].collider.GetComponent<Warp>();
+                }
+                continue;
+            }
+
             if (!CheckColliderTag(_hitResults[_i].collider)) continue;
 
             // Cache normal hit
@@ -188,6 +205,13 @@ public class Movable : MonoBehaviour
                 _distance = _newDistance;
                 _closestHitIndex = _i;
             }
+        }
+
+        // Teleport if needed
+        if (!_isOverlappingWarp && (currentWarp != null))
+        {
+            currentWarp.TryToTeleport(this);
+            currentWarp = null;
         }
 
         // Return if not enough movement

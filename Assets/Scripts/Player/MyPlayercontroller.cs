@@ -47,9 +47,6 @@ public class MyPlayercontroller : Movable
     [SerializeField]
     private Transform                       attackTransform =       null;
 
-    [SerializeField]
-    private Warp                            currentWarp =           null;
-
 
     [SerializeField, HorizontalLine(2, SuperColor.Raspberry, order = 0), Section("STATES", order = 1), Space(order = 2)]
     private bool                            isPlantActivated =      false;
@@ -191,7 +188,7 @@ public class MyPlayercontroller : Movable
                     if (_colliders[_i].gameObject.HasTag("Repairable"))
                     {
                         Debug.Log("Repair");
-                        Repair(_colliders[_i].GetComponent<Repairable>());
+                        Repair(_colliders[_i].GetComponentInParent<Repairable>());
                         continue;
                     }
                 }
@@ -318,9 +315,9 @@ public class MyPlayercontroller : Movable
         repairCoroutine = null;
     }
 
-    /**************************
-     *******   REPAIR   *******
-     *************************/
+    /************************
+     *******   LIFE   *******
+     ***********************/
 
     private void Die()
     {
@@ -386,8 +383,12 @@ public class MyPlayercontroller : Movable
 
         while (_timer > 0)
         {
-            yield return null;
-            _timer -= Time.deltaTime;
+            float _wait = Mathf.Min(playerSettings.PlantProjectileInterval, _timer);
+
+            yield return new WaitForSeconds(_wait);
+            _timer -= _wait;
+
+            //Instantiate(playerSettings.Balls, attackTransform.position, Quaternion.identity).GetComponent<Ball>().Init(isFacingRight);
         }
 
         isBallsTrapActivated = false;
@@ -491,14 +492,12 @@ public class MyPlayercontroller : Movable
 
     private IEnumerator OverlapCollisions()
     {
-        bool _isOverlappingWarp;
         int _count;
         Collider2D[] _colliders = new Collider2D[16];
 
         while (true)
         {
             yield return null;
-            _isOverlappingWarp = false;
 
             // Set contact filter
             contactFilter.useTriggers = true;
@@ -509,10 +508,10 @@ public class MyPlayercontroller : Movable
             {
                 if (_colliders[_i].isTrigger)
                 {
-                    if (_colliders[_i].gameObject.HasTag("Warp"))
+                    if (_colliders[_i].gameObject.HasTag("Spikes"))
                     {
-                        _isOverlappingWarp = true;
-                        if (currentWarp == null) currentWarp = _colliders[_i].GetComponent<Warp>();
+                        Kill();
+                        yield break;
                     }
 
                     continue;
@@ -532,13 +531,6 @@ public class MyPlayercontroller : Movable
 
             // Set contact filter
             contactFilter.useTriggers = false;
-
-            // Teleport if needed
-            if (!_isOverlappingWarp && (currentWarp != null))
-            {
-                currentWarp.TryToTeleport(this);
-                currentWarp = null;
-            }
 
             // Cast collider down and executes associated code
             RaycastHit2D[] _hit = new RaycastHit2D[1];
