@@ -29,6 +29,10 @@ public class LevelManager : MonoBehaviour
 
     [SerializeField]
     private Repairable[]        repairables =           new Repairable[] { };
+
+    [SerializeField]
+    private bool isTutorial = false;
+    public bool IsTutorial { get { return isTutorial; } }
     #endregion
 
     #region Methods

@@ -23,7 +23,7 @@ public class Repairable : MonoBehaviour
     protected RepairTpe                 repairType =            RepairTpe.Plant;
 
     [SerializeField]
-    private UnityEvent                  Event =                 new UnityEvent();
+    private UnityEvent                  @event =                 new UnityEvent();
 
 
     /**********************
@@ -42,7 +42,7 @@ public class Repairable : MonoBehaviour
     {
         // Feedback
 
-        Event?.Invoke();
+        @event?.Invoke();
         if (_doDeactivate) Deactivate();
     }
 

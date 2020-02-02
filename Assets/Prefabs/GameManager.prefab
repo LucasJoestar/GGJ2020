@@ -52,13 +52,14 @@ MonoBehaviour:
   playerTwo: {fileID: 8349041694559505933, guid: 30628d730e476184f844afd90986fa42,
     type: 3}
   musicSource: {fileID: 5645097956283878878}
-  tutorial: {fileID: 0}
-  musicOne: {fileID: 0}
-  musicTwo: {fileID: 0}
-  musicThree: {fileID: 0}
-  victory: {fileID: 0}
-  fightLoop: {fileID: 8300000, guid: e088578369e12a146a8b818202a28f69, type: 3}
-  fightBonus: {fileID: 8300000, guid: 5d2021e55f3e5644096d0a9388f8ca67, type: 3}
+  tutorial: {fileID: 8300000, guid: e4a4d3c61fd96a2418b2fd8fdb8072a1, type: 3}
+  musicOne: {fileID: 8300000, guid: 72ddb3a1e73e82a46bee649212297c52, type: 3}
+  musicTwo: {fileID: 8300000, guid: b3d48e5f134cf63468bd957b3963a66b, type: 3}
+  musicThree: {fileID: 8300000, guid: a2ba6c539c3e62f4498dc48a96aefa7e, type: 3}
+  victory: {fileID: 8300000, guid: a5c8788950e7b024d924998bb29e1c7d, type: 3}
+  fight: {fileID: 8300000, guid: e088578369e12a146a8b818202a28f69, type: 3}
+  initSound: {fileID: 8300000, guid: 5d2021e55f3e5644096d0a9388f8ca67, type: 3}
+  scoreSound: {fileID: 8300000, guid: d6956530940eff0488a02fc3d06a4e23, type: 3}
   finalRound: {fileID: 8300000, guid: 96d770891e8432a439a0f400c931aa3a, type: 3}
   playerOneWin: {fileID: 8300000, guid: a65a379c8c9708843b912875cce9321e, type: 3}
   playerTwoWin: {fileID: 8300000, guid: 4723d9834d1682f48bc9a9125c8e533a, type: 3}
@@ -74,7 +75,7 @@ MonoBehaviour:
   trapSpawn: {fileID: 8300000, guid: f80dac5af48c07f4c8ad8b4e161edd41, type: 3}
   turretInstall: {fileID: 8300000, guid: b89f80783d0cc864cb0fd2c8403568a9, type: 3}
   spikeDeath: {fileID: 8300000, guid: a71e73b85ea7d734eac932836c4be012, type: 3}
-  BallWhoosh: {fileID: 8300000, guid: 7a365d9812442c64b98ca91ef8308251, type: 3}
+  ballWhoosh: {fileID: 0}
   shieldAura: {fileID: 8300000, guid: e32c1407c5d1f21409fc287c9b303167, type: 3}
   sawTrapSpawn: {fileID: 8300000, guid: 24a6f834a8d56ce43905dcd5976fadf7, type: 3}
   sawTrapLoop: {fileID: 8300000, guid: 06ed6f235ce2d4345b866f9d0ba19deb, type: 3}
@@ -88,9 +89,9 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: e4a4d3c61fd96a2418b2fd8fdb8072a1, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -181,20 +182,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5645097956283878864}
     m_Modifications:
-    - target: {fileID: 942652731, guid: 5e78ac06b3c9e2d43a32ff544ab7665b, type: 3}
-      propertyPath: m_Camera
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 3371044735866658914, guid: 5e78ac06b3c9e2d43a32ff544ab7665b,
-        type: 3}
-      propertyPath: m_Camera
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 3371044736321746575, guid: 5e78ac06b3c9e2d43a32ff544ab7665b,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 39.600098
-      objectReference: {fileID: 0}
     - target: {fileID: 3371044736894872792, guid: 5e78ac06b3c9e2d43a32ff544ab7665b,
         type: 3}
       propertyPath: m_LocalPosition.x

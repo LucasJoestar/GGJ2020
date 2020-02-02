@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -28,6 +29,9 @@ public class GameManager : MonoBehaviour
     /**********************
      *****   FIELDS   *****
      *********************/
+
+    private List<MyPlayercontroller> playersReady = new List<MyPlayercontroller>();
+
 
     [SerializeField, Header("SCORE")]
     private int                     playerOneScore =        0;
@@ -75,6 +79,10 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private AudioClip               initSound =             null;
     public AudioClip                InitSound { get { return initSound; } }
+
+    [SerializeField]
+    private AudioClip               scoreSound = null;
+    public AudioClip                Scoresound { get { return scoreSound; } }
 
     [SerializeField]
     private AudioClip               finalRound =            null;
@@ -265,6 +273,7 @@ public class GameManager : MonoBehaviour
             _clip = tutorial;
             playerOneScore = 0;
             playerTwoScore = 0;
+            playersReady.Clear();
         }
         else
         {
@@ -305,7 +314,16 @@ public class GameManager : MonoBehaviour
     public void ReloadTuto()
     {
         SceneManager.LoadScene(0);
-        musicSource.clip = tutorial;
+    }
+
+    public void SetGameReady(MyPlayercontroller _player)
+    {
+        if (playersReady.Contains(_player)) return;
+        else
+        {
+            playersReady.Add(_player);
+            if (playersReady.Count == 2) LoadRandomLevel();
+        }
     }
     #endregion
 
@@ -319,7 +337,7 @@ public class GameManager : MonoBehaviour
     {
         if (I)
         {
-            Destroy(this);
+            Destroy(gameObject);
             return;
         }
 

@@ -93,6 +93,8 @@ public class UIManager : MonoBehaviour
         scoreAnchor.SetActive(false);
         if (_scene.buildIndex == 0)
         {
+            Debug.Log("Reset");
+
             playerOneVictory.SetActive(false);
             playerTwoVictory.SetActive(false);
 
@@ -131,6 +133,7 @@ public class UIManager : MonoBehaviour
 
         yield return new WaitForSeconds(.5f);
 
+        GameManager.PlayClipAtPoint(GameManager.I?.Scoresound, Camera.main.transform.position);
         int _score = _isPlayerOneVictory ? GameManager.I.PlayerOneScore : GameManager.I.PlayerTwoScore;
 
         if (_isPlayerOneVictory) playerOneScore[_score - 1].SetTrigger("Activate");
@@ -171,7 +174,7 @@ public class UIManager : MonoBehaviour
     {
         if (I)
         {
-            Destroy(this);
+            Destroy(gameObject);
             return;
         }
 
