@@ -97,7 +97,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4772866638876165501
 Transform:
   m_ObjectHideFlags: 0
@@ -131,7 +131,7 @@ MonoBehaviour:
   repairAmount: 7
   trigger: {fileID: 4772866640259710299}
   repairType: 1
-  Event:
+  event:
     m_PersistentCalls:
       m_Calls: []
   animator: {fileID: 4772866638876165500}
