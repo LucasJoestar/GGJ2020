@@ -53,7 +53,7 @@ public class Repairable : MonoBehaviour
         trigger.enabled = false;
         repairCount++;
 
-        UIManager.I?.SetReppairPercent((float)repairCount / repairAmount);
+        UIManager.I?.SetReppairPercent(_player.IsPlayerOne, (float)repairCount / repairAmount);
 
         if (repairCount== repairAmount)
         {

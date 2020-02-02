@@ -304,6 +304,7 @@ public class GameManager : MonoBehaviour
             musicSource.time = 0;
             musicSource.Play();
         }
+        Camera.main.gameObject.AddComponent<MyCamera>();
     }
 
     public void ReloadLevel()
@@ -345,6 +346,7 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         SceneManager.sceneLoaded += OnSceneLoaded;
+        Camera.main.gameObject.AddComponent<MyCamera>();
     }
     #endregion
 

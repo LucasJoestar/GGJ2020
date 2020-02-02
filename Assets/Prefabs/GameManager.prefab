@@ -1,5 +1,152 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2372833137975102083
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7510622626293566584}
+  - component: {fileID: 2118659652479021191}
+  - component: {fileID: 2397767894032208878}
+  m_Layer: 0
+  m_Name: Repair Anchor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &7510622626293566584
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2372833137975102083}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2926122863117380223}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -0.0126953125, y: -0.007598877}
+  m_SizeDelta: {x: 1.0347, y: 0.1925}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &2118659652479021191
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2372833137975102083}
+  m_CullTransparentMesh: 0
+--- !u!114 &2397767894032208878
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2372833137975102083}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 12fe5cf5b1688ab4481a852646f69fe1, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!1 &5306281044975647280
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2926122863117380223}
+  - component: {fileID: 8441650479465355276}
+  - component: {fileID: 6309115530647909113}
+  m_Layer: 0
+  m_Name: P2 Repair Gauge
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &2926122863117380223
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5306281044975647280}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 7510622626293566584}
+  m_Father: {fileID: 5645097956303173967}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -171.89, y: -100.16}
+  m_SizeDelta: {x: 0.9796, y: 0.1265}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &8441650479465355276
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5306281044975647280}
+  m_CullTransparentMesh: 0
+--- !u!114 &6309115530647909113
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5306281044975647280}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.6331762, g: 0.09803919, b: 0.9137255, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 1d4efa7ffc751b34482bc84c349b2587, type: 3}
+  m_Type: 3
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 0
+  m_FillAmount: 0
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &5645097956283878877
 GameObject:
   m_ObjectHideFlags: 0
@@ -182,6 +329,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5645097956283878864}
     m_Modifications:
+    - target: {fileID: 1901608153, guid: 5e78ac06b3c9e2d43a32ff544ab7665b, type: 3}
+      propertyPath: m_Name
+      value: P1 Repair Gauge
+      objectReference: {fileID: 0}
+    - target: {fileID: 1901608155, guid: 5e78ac06b3c9e2d43a32ff544ab7665b, type: 3}
+      propertyPath: m_Color.r
+      value: 0.9137255
+      objectReference: {fileID: 0}
+    - target: {fileID: 1901608155, guid: 5e78ac06b3c9e2d43a32ff544ab7665b, type: 3}
+      propertyPath: m_Color.g
+      value: 0.5747854
+      objectReference: {fileID: 0}
+    - target: {fileID: 1901608155, guid: 5e78ac06b3c9e2d43a32ff544ab7665b, type: 3}
+      propertyPath: m_Color.b
+      value: 0.09803919
+      objectReference: {fileID: 0}
     - target: {fileID: 3371044736894872792, guid: 5e78ac06b3c9e2d43a32ff544ab7665b,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -247,6 +410,12 @@ PrefabInstance:
 --- !u!4 &6962338513765656751 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3371044736894872792, guid: 5e78ac06b3c9e2d43a32ff544ab7665b,
+    type: 3}
+  m_PrefabInstance: {fileID: 5645097956166354039}
+  m_PrefabAsset: {fileID: 0}
+--- !u!224 &5645097956303173967 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 942652728, guid: 5e78ac06b3c9e2d43a32ff544ab7665b,
     type: 3}
   m_PrefabInstance: {fileID: 5645097956166354039}
   m_PrefabAsset: {fileID: 0}

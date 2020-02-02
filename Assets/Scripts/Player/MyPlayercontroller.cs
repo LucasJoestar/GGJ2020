@@ -118,6 +118,8 @@ public class MyPlayercontroller : Movable
         }
     }
 
+    public bool IsPlayerOne { get { return playerInputs.IsPlayerOne; } }
+
     public bool IsMoving
     {
         get { return isMoving; }
@@ -288,8 +290,8 @@ public class MyPlayercontroller : Movable
 
     private IEnumerator DoRepair(Repairable _repairable)
     {
-        UIManager.I?.ActiveRepair(new Vector2(transform.position.x, transform.position.y + 1.5f));
-        UIManager.I?.SetReppairPercent(0);
+        UIManager.I?.ActiveRepair(IsPlayerOne, new Vector2(transform.position.x, transform.position.y + 1.5f));
+        UIManager.I?.SetReppairPercent(IsPlayerOne, 0);
         IsPlayable = false;
 
         audioSource.time = 0;
@@ -298,7 +300,7 @@ public class MyPlayercontroller : Movable
         while (true)
         {
             yield return null;
-            if (Input.GetKeyDown(playerInputs.IsPlayerOne ? KeyCode.Joystick1Button2 : KeyCode.Joystick2Button2) || Input.GetKeyDown(playerInputs.IsPlayerOne ? KeyCode.Joystick1Button1 : KeyCode.Joystick2Button1) || Input.GetKeyDown(playerInputs.IsPlayerOne ? KeyCode.Joystick1Button3 : KeyCode.Joystick2Button3) || Input.GetKeyDown(playerInputs.IsPlayerOne ? KeyCode.E : KeyCode.RightShift) || Input.GetKeyDown(playerInputs.IsPlayerOne ? KeyCode.F : KeyCode.Return))
+            if (Input.GetKeyDown(IsPlayerOne ? KeyCode.Joystick1Button2 : KeyCode.Joystick2Button2) || Input.GetKeyDown(IsPlayerOne ? KeyCode.Joystick1Button1 : KeyCode.Joystick2Button1) || Input.GetKeyDown(playerInputs.IsPlayerOne ? KeyCode.Joystick1Button3 : KeyCode.Joystick2Button3) || Input.GetKeyDown(playerInputs.IsPlayerOne ? KeyCode.E : KeyCode.RightShift) || Input.GetKeyDown(playerInputs.IsPlayerOne ? KeyCode.F : KeyCode.Return))
             {
                 if (_repairable.Repair(this)) break;
             }
@@ -344,6 +346,7 @@ public class MyPlayercontroller : Movable
 
         // Increase score
         GameManager.I.IncreaseScore(!playerInputs.IsPlayerOne);
+        MyCamera.I?.StartScreenShake();
     }
 
     public void Kill(Vector2 _direction)

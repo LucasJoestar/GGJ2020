@@ -47,10 +47,10 @@ public class UIManager : MonoBehaviour
 
 
     [SerializeField]
-    private RectTransform               repairAnchor =          null;
+    private Image                       p1RepairGauge =         null;
 
     [SerializeField]
-    private Image                       repairGauge =           null;
+    private Image                       p2RepairGauge =         null;
 
 
     /**********************
@@ -82,15 +82,20 @@ public class UIManager : MonoBehaviour
      *******   REPAIR   *******
      *************************/
 
-    public void ActiveRepair(Vector2 _position)
+    public void ActiveRepair(bool _isPlayerOne, Vector2 _position)
     {
-        repairAnchor.position = _position;
-        repairAnchor.gameObject.SetActive(true);
+        Image _gauge = _isPlayerOne ? p1RepairGauge : p2RepairGauge;
+
+        _gauge.transform.position = _position;
+        _gauge.gameObject.SetActive(true);
     }
 
     private void OnLoadScene(Scene _scene, LoadSceneMode _mode)
     {
         scoreAnchor.SetActive(false);
+        p1RepairGauge.gameObject.SetActive(false);
+        p2RepairGauge.gameObject.SetActive(false);
+
         if (_scene.buildIndex == 0)
         {
             Debug.Log("Reset");
@@ -109,15 +114,17 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void SetReppairPercent(float _percent)
+    public void SetReppairPercent(bool _isPlayerOne, float _percent)
     {
+        Image _gauge = _isPlayerOne ? p1RepairGauge : p2RepairGauge;
+
         if (_percent == 1)
         {
-            repairAnchor.gameObject.SetActive(false);
+            _gauge.gameObject.SetActive(false);
             return;
         }
 
-        repairGauge.fillAmount = _percent;
+        _gauge.fillAmount = _percent;
     }
 
 
