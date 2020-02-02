@@ -29,21 +29,21 @@ public class UIManager : MonoBehaviour
      *********************/
 
     [SerializeField]
-    private Sprite                      ScorePointSprite =      null;
-
-    [SerializeField]
-    private Sprite                      ScoreEmptySprite =      null;
-
-
-
-    [SerializeField]
     private GameObject                  scoreAnchor =           null;
 
-    [SerializeField]
-    private Image[]                     playerOneScore =        new Image[] { };
 
     [SerializeField]
-    private Image[]                     playerTwoScore =        new Image[] { };
+    private GameObject                  playerOneVictory =      null;
+
+    [SerializeField]
+    private GameObject                  playerTwoVictory =      null;
+
+
+    [SerializeField]
+    private Animator[]                  playerOneScore =        new Animator[] { };
+
+    [SerializeField]
+    private Animator[]                  playerTwoScore =        new Animator[] { };
 
 
     [SerializeField]
@@ -88,6 +88,25 @@ public class UIManager : MonoBehaviour
         repairAnchor.gameObject.SetActive(true);
     }
 
+    private void OnLoadScene(Scene _scene, LoadSceneMode _mode)
+    {
+        scoreAnchor.SetActive(false);
+        if (_scene.buildIndex == 0)
+        {
+            playerOneVictory.SetActive(false);
+            playerTwoVictory.SetActive(false);
+
+            foreach (Animator _score in playerOneScore)
+            {
+                _score.SetTrigger("Reset");
+            }
+            foreach (Animator _score in playerTwoScore)
+            {
+                _score.SetTrigger("Reset");
+            }
+        }
+    }
+
     public void SetReppairPercent(float _percent)
     {
         if (_percent == 1)
@@ -114,14 +133,24 @@ public class UIManager : MonoBehaviour
 
         int _score = _isPlayerOneVictory ? GameManager.I.PlayerOneScore : GameManager.I.PlayerTwoScore;
 
-        if (_isPlayerOneVictory) playerOneScore[_score - 1].sprite = ScorePointSprite;
-        else playerTwoScore[_score - 1].sprite = ScorePointSprite;
+        if (_isPlayerOneVictory) playerOneScore[_score - 1].SetTrigger("Activate");
+        else playerTwoScore[_score - 1].SetTrigger("Activate");
 
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(1.5f);
 
         // Call game end of player victory
-        if (_score == playerOneScore.Length) OnEndGame?.Invoke(_isPlayerOneVictory);
-        GameManager.LoadRandomLevel();
+        if (_score == playerOneScore.Length)
+        {
+            OnEndGame?.Invoke(_isPlayerOneVictory);
+
+            if (_isPlayerOneVictory) playerOneVictory.SetActive(true);
+            else playerTwoVictory.SetActive(true);
+
+            yield return new WaitForSeconds(3);
+
+            GameManager.I?.ReloadTuto();
+        }
+        else GameManager.I?.LoadRandomLevel();
     }
 
     public void UpdatePlayersScore(bool _isPlayerOneVictory) => StartCoroutine(DoUpdatePlayersSore(_isPlayerOneVictory));
@@ -147,7 +176,7 @@ public class UIManager : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
-        SceneManager.sceneLoaded += (Scene _scene, LoadSceneMode _loadMode) => scoreAnchor.SetActive(false);
+        SceneManager.sceneLoaded += OnLoadScene;
     }
     #endregion
 

@@ -241,6 +241,9 @@ public class MyPlayercontroller : Movable
         isJumping = true;
         animator?.SetTrigger("Jump");
 
+        // Feedback
+        GameManager.PlayClipAtPoint(GameManager.I?.JumpSound, transform.position);
+
         float _timer = playerSettings.JumpMaxTimeLength;
         velocity.y = playerSettings.JumpInitialForce;
 
@@ -351,6 +354,7 @@ public class MyPlayercontroller : Movable
     private IEnumerator Plant()
     {
         // Feedback
+        GameManager.PlayClipAtPoint(GameManager.I?.TurretInstall, transform.position);
 
         float _timer = playerSettings.PlantActivationTime;
         isPlantActivated = true;
@@ -517,6 +521,9 @@ public class MyPlayercontroller : Movable
                     if (_colliders[_i].gameObject.HasTag("Spikes"))
                     {
                         Kill(Vector3.up);
+
+                        // Feedback
+                        GameManager.PlayClipAtPoint(GameManager.I?.SpikeDeath, transform.position);
                         yield break;
                     }
                     Ball _ball = _colliders[_i].gameObject.GetComponent<Ball>();
@@ -524,6 +531,9 @@ public class MyPlayercontroller : Movable
                     {
                         _ball.DestroyBall();
                         Kill(Vector3.up);
+
+                        // Feedback
+                        GameManager.PlayClipAtPoint(GameManager.I?.BallWhoosh, transform.position);
                         yield break;
                     }
 

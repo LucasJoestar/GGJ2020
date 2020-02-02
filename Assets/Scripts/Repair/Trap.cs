@@ -46,6 +46,8 @@ public class Trap : Repairable
     {
         base.Spawn();
         repairSprite.enabled = true;
+
+        GameManager.PlayClipAtPoint(GameManager.I?.TrapSound, transform.position);
     }
     #endregion
 

@@ -41,6 +41,8 @@ public class Warp : MonoBehaviour
 
             _movable.transform.position = new Vector3(_movable.transform.position.x, teleportTransform.transform.position.y, _movable.transform.position.z);
         }
+
+        GameManager.PlayClipAtPoint(GameManager.I?.WarpSound, _movable.transform.position);
     }
 
     private void OnDrawGizmos()
