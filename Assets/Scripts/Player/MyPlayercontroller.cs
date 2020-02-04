@@ -538,7 +538,12 @@ public class MyPlayercontroller : Movable
             }
             return false;
         }
-        return !_hit.collider.gameObject.HasTag("Projectile");
+        if (_hit.collider.gameObject.HasTag("Projectile"))
+        {
+            Kill(new Vector2(isFacingRight ? -1 : 1, 0));
+            return false;
+        }
+        return true;
     }
 
     private void OnHitSomethingCallback(RaycastHit2D _hit)
