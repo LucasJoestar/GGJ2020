@@ -107,6 +107,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Plant
       objectReference: {fileID: 0}
+    - target: {fileID: 8206604474953243577, guid: 588b88dd3a5bd10429e7c2dc3cb52c0a,
+        type: 3}
+      propertyPath: repairType
+      value: -2
+      objectReference: {fileID: 0}
     - target: {fileID: 8206604474953243579, guid: 588b88dd3a5bd10429e7c2dc3cb52c0a,
         type: 3}
       propertyPath: m_LocalPosition.x

@@ -36,14 +36,14 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  JumpInitialForce: 12
-  JumpContinousForce: 0.2
+  JumpInitialForce: 10.5
+  JumpContinousForce: 15
   JumpMaxTimeLength: 0.5
   Projectile: {fileID: 4620995462510565192, guid: 27f3158c26b7a2d4faf0bba4a562df49,
     type: 3}
   Balls: {fileID: 5685730330555812688, guid: e538431d656d00b438260c6884c3df79, type: 3}
   PlantProjectileInterval: 1
   PlantActivationTime: 5
-  ShieldActivationTime: 5
-  BallsProjectileInterval: 0.2
+  ShieldActivationTime: 7.5
+  BallsProjectileInterval: 0.25
   BallsActivationTime: 5

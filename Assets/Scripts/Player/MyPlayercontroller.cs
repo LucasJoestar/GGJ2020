@@ -92,25 +92,32 @@ public class MyPlayercontroller : Movable
         get { return base.IsGrounded; }
         protected set
         {
-            base.IsGrounded = value;
+            isGrounded = true;
 
             animator?.SetBool("IsGrounded", value);
+            if (value)
+            {
+                if (setGroundedCoroutine != null)
+                {
+                    StopCoroutine(setGroundedCoroutine);
+                    setGroundedCoroutine = null;
+                }
+            }
+            else
+            {
+                if (isGrounded && (setGroundedCoroutine == null) && !isJumping)
+                {
+                    setGroundedCoroutine = StartCoroutine(SetGrounded());
+                }
+            }
         }
     }
 
     public bool IsPlayable
     {
         get { return isPlayable; }
-        private set
+        set
         {
-            #if UNITY_EDITOR
-            if (!Application.isPlaying)
-            {
-                isPlayable = true;
-                return;
-            }
-            #endif
-
             isPlayable = value;
 
             if (value)
@@ -151,6 +158,8 @@ public class MyPlayercontroller : Movable
     private Coroutine   jumpCoroutine =             null;
 
     private Coroutine   repairCoroutine =           null;
+
+    private Coroutine   setGroundedCoroutine =      null;
 
 
     private Coroutine   shieldCoroutine =           null;
@@ -491,6 +500,14 @@ public class MyPlayercontroller : Movable
      ******   MOVEMENTS   ******
      **************************/
 
+    private IEnumerator SetGrounded()
+    {
+        yield return new WaitForSeconds(.1f);
+        isGrounded = false;
+
+        setGroundedCoroutine = null;
+    }
+
     public override void Flip()
     {
         base.Flip();
@@ -607,10 +624,11 @@ public class MyPlayercontroller : Movable
             contactFilter.useTriggers = false;
 
             // Cast collider down and executes associated code
-            RaycastHit2D[] _hit = new RaycastHit2D[1];
-            if (collider.Cast(Vector2.down, _hit, .1f) > 0)
+            RaycastHit2D[] _hit = new RaycastHit2D[16];
+            _count = collider.Cast(Vector2.down, _hit, .1f);
+            for (int _i = 0; _i < _count; _i++)
             {
-                string _layerName = LayerMask.LayerToName(_hit[0].transform.gameObject.layer);
+                string _layerName = LayerMask.LayerToName(_hit[_i].transform.gameObject.layer);
 
                 // Set isGrounded value to true if a platform is at least .1f down
                 if (_layerName == "Platform")
@@ -639,7 +657,6 @@ public class MyPlayercontroller : Movable
         base.Start();
 
         // Start checking inputs
-        IsPlayable = true;
         this.OnHitSomething += OnHitSomethingCallback;
 
         StartCoroutine(OverlapCollisions());

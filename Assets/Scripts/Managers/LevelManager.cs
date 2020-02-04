@@ -15,8 +15,14 @@ public class LevelManager : MonoBehaviour
         public Transform        PlayerOneSpawn, PlayerTwoSpawn =        null;
     }
 
+    public static event Action  OnSpawnPlayers =        null;
+
     #region Fields / Properties
     public static LevelManager  I =                     null;
+
+    public MyPlayercontroller   PlayerOne               { get; private set; }
+
+    public MyPlayercontroller    PlayerTwo              { get; private set; }
 
     [SerializeField, HorizontalLine(order = 0), Section("SPAWN POINTS", order = 1), Space(order = 2)]
     private SpawnPoint[]        spawnPoints =           new SpawnPoint[] { };
@@ -84,8 +90,10 @@ public class LevelManager : MonoBehaviour
         }
 
         // Instantiate players
-        Instantiate(GameManager.I.PlayerOne, _playerOnePosition, GameManager.I.PlayerOne.transform.rotation);
-        Instantiate(GameManager.I.PlayerTwo, _playerTwoPosition, GameManager.I.PlayerTwo.transform.rotation);
+        PlayerOne = Instantiate(GameManager.I.PlayerOne, _playerOnePosition, GameManager.I.PlayerOne.transform.rotation).GetComponent<MyPlayercontroller>();
+        PlayerTwo = Instantiate(GameManager.I.PlayerTwo, _playerTwoPosition, GameManager.I.PlayerTwo.transform.rotation).GetComponent<MyPlayercontroller>();
+
+        OnSpawnPlayers?.Invoke();
 
         foreach (Repairable _repairable in repairables)
         {

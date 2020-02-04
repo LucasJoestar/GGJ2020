@@ -41,6 +41,10 @@ public class GameManager : MonoBehaviour
 
 
     [SerializeField]
+    private bool                    isGameEnded =           false;
+
+
+    [SerializeField]
     private GameObject              playerOne =             null;
 
     [SerializeField]
@@ -220,11 +224,14 @@ public class GameManager : MonoBehaviour
 
     public void IncreaseScore(bool _isPlayerOne)
     {
+        if (isGameEnded) return;
+
         // Set players score
         if (_isPlayerOne) playerOneScore++;
         else playerTwoScore++;
 
         // Update UI
+        isGameEnded = true;
         UIManager.I?.UpdatePlayersScore(_isPlayerOne);
     }
 
@@ -304,7 +311,9 @@ public class GameManager : MonoBehaviour
             musicSource.time = 0;
             musicSource.Play();
         }
+
         Camera.main.gameObject.AddComponent<MyCamera>();
+        isGameEnded = false;
     }
 
     public void ReloadLevel()

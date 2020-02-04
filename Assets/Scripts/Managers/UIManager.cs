@@ -53,6 +53,10 @@ public class UIManager : MonoBehaviour
     private Image                       p2RepairGauge =         null;
 
 
+    [SerializeField]
+    private Animator                    animator =     null;
+
+
     /**********************
      ***   PROPERTIES   ***
      *********************/
@@ -78,6 +82,60 @@ public class UIManager : MonoBehaviour
     #region Methods
 
     #region Original Methods
+    /*************************
+     *****   ANIMATION   *****
+     ************************/
+
+    private void PlayStartAnim()
+    {
+        if (!animator || (SceneManager.GetActiveScene().buildIndex == 0)) return;
+
+        LevelManager.I.PlayerOne.IsPlayable = false;
+        LevelManager.I.PlayerTwo.IsPlayable = false;
+        animator.SetTrigger("Play");
+    }
+
+    public void PlayStartAnimSound()
+    {
+        int _totalScore = GameManager.I.PlayerOneScore + GameManager.I.PlayerTwoScore;
+        AudioClip _clip = null;
+
+        switch (_totalScore)
+        {
+            case 0:
+                _clip = GameManager.I.RoundOne;
+                break;
+
+            case 1:
+                _clip = GameManager.I.RoundTwo;
+                break;
+
+            case 2:
+                _clip = GameManager.I.RoundThree;
+                break;
+
+            case 3:
+                _clip = GameManager.I.RoundFour;
+                break;
+
+            case 4:
+                _clip = GameManager.I.FinalRound;
+                break;
+
+            default:
+                break;
+        }
+
+        if (_clip != null) GameManager.PlayClipAtPoint(_clip, Camera.main.transform.position);
+    }
+
+    public void EndStartAnim()
+    {
+        LevelManager.I.PlayerOne.IsPlayable = true;
+        LevelManager.I.PlayerTwo.IsPlayable = true;
+    }
+
+
     /**************************
      *******   REPAIR   *******
      *************************/
@@ -98,19 +156,8 @@ public class UIManager : MonoBehaviour
 
         if (_scene.buildIndex == 0)
         {
-            Debug.Log("Reset");
-
             playerOneVictory.SetActive(false);
             playerTwoVictory.SetActive(false);
-
-            foreach (Animator _score in playerOneScore)
-            {
-                _score.SetTrigger("Reset");
-            }
-            foreach (Animator _score in playerTwoScore)
-            {
-                _score.SetTrigger("Reset");
-            }
         }
     }
 
@@ -161,6 +208,15 @@ public class UIManager : MonoBehaviour
             if (_isPlayerOneVictory) playerOneVictory.SetActive(true);
             else playerTwoVictory.SetActive(true);
 
+            foreach (Animator _scoreAnim in playerOneScore)
+            {
+                _scoreAnim.SetTrigger("Reset");
+            }
+            foreach (Animator _scoreAnim in playerTwoScore)
+            {
+                _scoreAnim.SetTrigger("Reset");
+            }
+
             GameManager.I?.PlayVictory();
             yield return new WaitForSeconds(GameManager.I.Victory.length + 1);
 
@@ -187,6 +243,7 @@ public class UIManager : MonoBehaviour
 
         I = this;
         DontDestroyOnLoad(this);
+        LevelManager.OnSpawnPlayers += PlayStartAnim;
     }
 
     // Start is called before the first frame update

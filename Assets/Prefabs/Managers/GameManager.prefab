@@ -47,6 +47,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerOneScore: 0
   playerTwoScore: 0
+  isGameEnded: 0
   playerOne: {fileID: 5250390222039885770, guid: 9e6930f6217caf1418c89ec76b4baaa7,
     type: 3}
   playerTwo: {fileID: 8349041694559505933, guid: 30628d730e476184f844afd90986fa42,
@@ -75,7 +76,7 @@ MonoBehaviour:
   trapSpawn: {fileID: 8300000, guid: f80dac5af48c07f4c8ad8b4e161edd41, type: 3}
   turretInstall: {fileID: 8300000, guid: b89f80783d0cc864cb0fd2c8403568a9, type: 3}
   spikeDeath: {fileID: 8300000, guid: a71e73b85ea7d734eac932836c4be012, type: 3}
-  ballWhoosh: {fileID: 0}
+  ballWhoosh: {fileID: 8300000, guid: 7a365d9812442c64b98ca91ef8308251, type: 3}
   shieldAura: {fileID: 8300000, guid: e32c1407c5d1f21409fc287c9b303167, type: 3}
   sawTrapSpawn: {fileID: 8300000, guid: 24a6f834a8d56ce43905dcd5976fadf7, type: 3}
   sawTrapLoop: {fileID: 8300000, guid: 06ed6f235ce2d4345b866f9d0ba19deb, type: 3}

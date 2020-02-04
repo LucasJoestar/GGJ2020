@@ -9,7 +9,7 @@ public class Trap : Repairable
     private Animator                animator =              null;
 
     [SerializeField]
-    private new Collider2D          collider =              null;
+    private new Collider2D[]          collider =              null;
 
     [SerializeField]
     private GameObject              repairSprite = null;
@@ -57,7 +57,10 @@ public class Trap : Repairable
     protected override void Awake()
     {
         base.Awake();
-        if (collider) collider.isTrigger = true;
+        for (int _i = 0; _i < collider.Length; _i++)
+        {
+            collider[_i].isTrigger = true;
+        }
     }
     #endregion
 
