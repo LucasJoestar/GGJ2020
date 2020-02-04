@@ -657,6 +657,7 @@ public class MyPlayercontroller : Movable
         base.Start();
 
         // Start checking inputs
+        IsPlayable = isPlayable;
         this.OnHitSomething += OnHitSomethingCallback;
 
         StartCoroutine(OverlapCollisions());
