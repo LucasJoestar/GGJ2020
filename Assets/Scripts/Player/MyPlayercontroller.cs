@@ -105,9 +105,10 @@ public class MyPlayercontroller : Movable
             }
             else
             {
-                if (isGrounded && (setGroundedCoroutine == null) && !isJumping)
+                if (isGrounded && (setGroundedCoroutine == null))
                 {
-                    setGroundedCoroutine = StartCoroutine(SetGrounded());
+                    if (!isJumping) setGroundedCoroutine = StartCoroutine(SetGrounded());
+                    else isGrounded = false;
                 }
             }
         }
