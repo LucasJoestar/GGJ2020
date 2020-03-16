@@ -14,6 +14,9 @@ public class Projectile : Movable
 
     [SerializeField]
     private float           rotationSpeed =                 .25f;
+
+
+    public bool DoHit { get { return doHit; } }
     #endregion
 
     #region Memory & Coroutines
@@ -74,7 +77,7 @@ public class Projectile : Movable
             rigidbody.MovePosition(rigidbody.position - _movement);
         }
 
-        if (_hit.collider.gameObject.HasTag("Player"))
+        if (_hit.collider.gameObject.HasTag("Player") && doHit)
         {
             _hit.collider.GetComponent<MyPlayercontroller>().Kill(originalVelocity);
             DestroyProjectile();

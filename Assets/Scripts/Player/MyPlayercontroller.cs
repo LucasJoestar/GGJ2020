@@ -7,7 +7,7 @@ using UnityEngine;
 public class MyPlayercontroller : Movable
 {
     #region Events
-
+    public static event Action<Repairable> OnRepairSomething = null;
     #endregion
 
     #region Fields / Properties
@@ -317,7 +317,18 @@ public class MyPlayercontroller : Movable
         audioSource.time = 0;
         audioSource.Play();
 
-        while (true)
+        bool _doRepair = true;
+
+        OnRepairSomething += (Repairable _r) =>
+        {
+            if (_r == _repairable)
+            {
+                UIManager.I?.SetReppairPercent(IsPlayerOne, 1);
+                _doRepair = false;
+            }
+        };
+
+        while (_doRepair)
         {
             yield return null;
             if (Input.GetKeyDown(IsPlayerOne ? KeyCode.Joystick1Button2 : KeyCode.Joystick2Button2) || Input.GetKeyDown(IsPlayerOne ? KeyCode.Joystick1Button1 : KeyCode.Joystick2Button1) || Input.GetKeyDown(playerInputs.IsPlayerOne ? KeyCode.Joystick1Button3 : KeyCode.Joystick2Button3) || Input.GetKeyDown(playerInputs.IsPlayerOne ? KeyCode.E : KeyCode.RightShift) || Input.GetKeyDown(playerInputs.IsPlayerOne ? KeyCode.F : KeyCode.Return))
@@ -326,6 +337,7 @@ public class MyPlayercontroller : Movable
             }
         }
 
+        OnRepairSomething?.Invoke(_repairable);
         audioSource.Stop();
 
         IsPlayable = true;
@@ -538,7 +550,7 @@ public class MyPlayercontroller : Movable
             }
             return false;
         }
-        if (_hit.collider.gameObject.HasTag("Projectile"))
+        if (_hit.collider.gameObject.HasTag("Projectile") && _hit.collider.GetComponent<Projectile>().DoHit)
         {
             Kill(new Vector2(isFacingRight ? -1 : 1, 0));
             return false;
